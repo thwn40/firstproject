@@ -1,6 +1,9 @@
 package com.sjboard.firstproject.domain;
 
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -8,6 +11,8 @@ import java.util.List;
 
 @Entity
 @Getter
+@Setter
+//@NoArgsConstructor
 public class Member {
 
     @Id
@@ -19,14 +24,15 @@ public class Member {
 
     private String password;
 
-    @OneToMany
+    @OneToMany(mappedBy = "member")
     private List<Board> boardList = new ArrayList<>();
 
-    @OneToMany
+    @OneToMany(mappedBy = "member")
     private List<Comment> commentList = new ArrayList<>();
 
-
-
-
-
+//    @Builder
+//    public Member(String loginId, String password) {
+//        this.loginId = loginId;
+//        this.password = password;
+//    }
 }
