@@ -21,17 +21,20 @@ public class Member {
 
     private String loginId;
 
+    private String name;
+
     private String password;
 
-    @OneToMany(mappedBy = "member")
-    private List<Board> boardList = new ArrayList<>();
+//    @OneToMany(mappedBy = "member")
+//    private List<Board> boardList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")
     private List<Comment> commentList = new ArrayList<>();
 
     @Builder
-    public Member(String loginId, String password) {
+    public Member(String loginId, String name, String password) {
         this.loginId = loginId;
+        this.name = name;
         this.password = password;
     }
 }

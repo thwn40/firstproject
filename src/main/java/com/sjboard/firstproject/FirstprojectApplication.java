@@ -18,6 +18,7 @@ public class FirstprojectApplication {
 	public static void main(String[] args) {
 
 		SpringApplication.run(FirstprojectApplication.class, args);
+		Member member = Member.builder().loginId("thwn40").password("asdf123").build();
 
 
 

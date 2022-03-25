@@ -27,17 +27,20 @@
       <button type="button" class="btn btn-primary">Sign-up</button>
     </div>
   </div>
-
+<form action ="/board/write" method = "post">
   <div class="my-3">
-    <label for="exampleFormControlInput1" class="form-label">제목</label>
-    <input class="form-control" id="exampleFormControlInput1" >
+    <label for="title" class="form-label">제목</label>
+    <input class="form-control" name="title" id="title" >
   </div>
   <div class="mb-3">
-    <label for="exampleFormControlTextarea1" class="form-label">내용</label>
-    <textarea class="form-control" id="exampleFormControlTextarea1" rows="8"></textarea>
+    <label for="content" class="form-label">내용</label>
+    <textarea class="form-control"name="content" id ="content" rows="8"></textarea>
   </div>
 
-  <div class="text-end"><button class="btn btn-primary" type="submit">글쓰기</button></div>
+  <div class="text-end"><button class="btn btn-primary" type="submit">제출</button></div>
+
+
+</form>
 
 </div>
 <script src="/docs/5.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>

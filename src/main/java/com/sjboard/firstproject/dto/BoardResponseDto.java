@@ -9,13 +9,11 @@ public class BoardResponseDto {
 private Long id;
 private String title;
 private String content;
-private Member member;
 
 
     public BoardResponseDto(Board entity) {
         this.id = entity.getId();
         this.title = entity.getTitle();
         this.content = entity.getContent();
-        this.member = entity.getMember();
     }
 }

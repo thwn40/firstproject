@@ -12,31 +12,29 @@ import java.util.List;
 
 @Entity
 @Getter
-public class Board {
+public class Board extends BaseTimeEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "board_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "member_id")
+//    private Member member;
 
     private String title;
+
+    private String author;
 
     private String content;
 
     @OneToMany(mappedBy = "board")
     List<Comment> comments = new ArrayList<>();
 
-    @CreatedDate
-    private LocalDateTime createdDate;
-
-
     @Builder
-    public Board(Member member, String title, String content) {
-        this.member = member;
+    public Board(String author,String title, String content) {
+        this.author = author;
         this.title = title;
         this.content = content;
     }
