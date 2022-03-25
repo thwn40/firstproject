@@ -11,7 +11,6 @@ import java.util.List;
 
 @Entity
 @Getter
-@Setter
 //@NoArgsConstructor
 public class Member {
 
@@ -30,9 +29,9 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Comment> commentList = new ArrayList<>();
 
-//    @Builder
-//    public Member(String loginId, String password) {
-//        this.loginId = loginId;
-//        this.password = password;
-//    }
+    @Builder
+    public Member(String loginId, String password) {
+        this.loginId = loginId;
+        this.password = password;
+    }
 }

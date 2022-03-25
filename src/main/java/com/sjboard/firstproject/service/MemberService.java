@@ -1,11 +1,12 @@
 package com.sjboard.firstproject.service;
 
 import com.sjboard.firstproject.domain.Member;
-import com.sjboard.firstproject.dto.MemberJoinDto;
 import com.sjboard.firstproject.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -27,7 +28,6 @@ public class MemberService {
     }
 
 
-
     @Transactional
     public Member Login(String loginId, String password){
         Member member = memberRepository.findByLoginId(loginId);
@@ -36,8 +36,16 @@ public class MemberService {
             return member;
         }
 
-        return null;
+        throw new IllegalStateException("아이디나 비밀번호가 틀립니다");
 
+    }
+
+    public List<Member> findMembers(){
+        return memberRepository.findAll();
+    }
+
+    public Member findOne(Long memberId){
+        return memberRepository.getById(memberId);
     }
 
 

@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 @RunWith(SpringRunner.class)
@@ -29,11 +30,7 @@ class MemberServiceTest {
     @Test
     public void 회원가입() throws Exception {
         //given
-        Member member = new Member();
-
-        member.setLoginId("thwn40");
-        member.setPassword("asdf123");
-
+        Member member = Member.builder().loginId("thwn40").password("asdf123").build();
 
 
         //when
@@ -41,6 +38,38 @@ class MemberServiceTest {
         System.out.println("saveId = " + saveId);
         //then
         assertEquals(member, memberRepository.findById(saveId).get());
+
+    }
+
+    @Test
+    public void 로그인() throws Exception{
+    //given
+        Member member = Member.builder().loginId("thwn40").password("asdf123").build();
+
+    //when
+        memberService.Join(member);
+        Member login = memberService.Login("thwn40", "asdf123");
+
+        //then
+
+        assertEquals(member, memberRepository.findById(login.getId()).get());
+
+
+    }
+
+    @Test
+    public void 로그인실패() throws Exception{
+        //given
+        Member member = Member.builder().loginId("thwn40").password("asdf123").build();
+
+        //when
+        memberService.Join(member);
+
+        //then
+
+        assertThrows(IllegalStateException.class, () -> {
+            memberService.Login("thwn40", "asdsf123");
+        });
 
 
     }

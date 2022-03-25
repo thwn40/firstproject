@@ -1,5 +1,6 @@
 package com.sjboard.firstproject.domain;
 
+import lombok.Builder;
 import lombok.Getter;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -24,7 +25,7 @@ public class Board {
 
     private String title;
 
-    private String Content;
+    private String content;
 
     @OneToMany(mappedBy = "board")
     List<Comment> comments = new ArrayList<>();
@@ -33,4 +34,15 @@ public class Board {
     private LocalDateTime createdDate;
 
 
+    @Builder
+    public Board(Member member, String title, String content) {
+        this.member = member;
+        this.title = title;
+        this.content = content;
+    }
+
+    public void update(String title, String content){
+        this.title = title;
+        this.content = content;
+    }
 }

@@ -1,5 +1,6 @@
 package com.sjboard.firstproject.domain;
 
+import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -23,7 +24,10 @@ public class Comment {
 
     private String content;
 
-
-
-
+    @Builder
+    public Comment(Board board, Member member, String content) {
+        this.board = board;
+        this.member = member;
+        this.content = content;
+    }
 }
