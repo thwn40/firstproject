@@ -7,10 +7,13 @@ import com.sjboard.firstproject.dto.BoardSaveDto;
 import com.sjboard.firstproject.dto.BoardUpdateDto;
 import com.sjboard.firstproject.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +39,10 @@ public class BoardService {
             return id;
         }
     }
+    @Transactional(readOnly = true)
+    public List<BoardResponseDto> findAllDesc() {
+        return boardRepository.findAll(Sort.by(Sort.Direction.DESC, "id")).stream().map(BoardResponseDto :: new).collect(Collectors.toList());
+    }
 
     //게시글 조회
     public BoardResponseDto findById(Long id) {
@@ -60,6 +67,8 @@ public class BoardService {
         }
     }
 
+    @Transactional
+    public int updateView(Long id) { return boardRepository.updateView(id); }
 
 }
 

@@ -14,11 +14,15 @@ public class BoardSaveDto {
 
     private String content;
 
+    private String author;
+
+
 
     @Builder
     public BoardSaveDto(String title, String content) {
         this.title = title;
         this.content = content;
+
     }
 
     public Board toEntity(){

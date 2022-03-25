@@ -35,22 +35,21 @@
                     <th>#</th>
                     <th>제목</th>
                     <th>글쓴이</th>
-<!--                    <th>작성일</th>-->
+                    <th>작성일</th>
                     <th>조회수</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="board : ${boards}">
-                    <td><a href="board.html" th:href="@{/items/{itemId}(itemId=${item.id})}" th:text="${board.id}">1</a></td>
-                    <td><a href="board.html" th:href="@{|/items/${item.id}|}" th:text="${board.title}">제목</a></td>
-                    <td>글쓴이</a></td>
-<!--                    <td th:text="${board.created}">날짜</td>-->
-                    <td >0</td>
+                <tr th:each="board : ${board}">
+                    <td><a  th:text="${board.id}">1</a></td>
+                    <td><a  th:href="@{|/board/${board.id}|}"  th:text="${board.title}">제목</a></td>
+                    <td><a th:text="${board.author}"></a></td>
+                    <td th:text="${board.modifiedDate}">날짜</td>
+                    <td th:text="${board.view}" >0</td>
                 </tr>
                 </tbody>
             </table>
         </div>
-
 
         <div class="text-end"><a class="btn btn-primary" th:href="@{/board/write}" role="button">글쓰기</a></div>
         <div class = "column">

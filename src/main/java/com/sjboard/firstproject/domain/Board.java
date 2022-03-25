@@ -3,6 +3,7 @@ package com.sjboard.firstproject.domain;
 import lombok.Builder;
 import lombok.Getter;
 
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
@@ -12,11 +13,11 @@ import java.util.List;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class Board extends BaseTimeEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "board_id")
     private Long id;
 
 //    @ManyToOne(fetch = FetchType.LAZY)
@@ -43,4 +44,7 @@ public class Board extends BaseTimeEntity{
         this.title = title;
         this.content = content;
     }
+    @Column(columnDefinition = "integer default 0", nullable = false)
+    private int view;
+
 }
