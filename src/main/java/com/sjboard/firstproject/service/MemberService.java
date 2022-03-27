@@ -1,8 +1,10 @@
 package com.sjboard.firstproject.service;
 
 import com.sjboard.firstproject.domain.Member;
+import com.sjboard.firstproject.dto.MemberJoinDto;
 import com.sjboard.firstproject.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,13 +16,19 @@ public class MemberService {
 
 
     private final MemberRepository memberRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Transactional
-    public Long Join(Member member){
-        Member byLoginId = memberRepository.findByLoginId(member.getLoginId());
+    public Long Join(MemberJoinDto memberJoinDto){
+        Member byLoginId = memberRepository.findByLoginId(memberJoinDto.getLoginId());
         if(byLoginId==null){
-            memberRepository.save(member);
-            return member.getId();
+            String rawPassword = memberJoinDto.getPassword();
+            return  memberRepository.save(Member.builder()
+                    .name(memberJoinDto.getName())
+                    .loginId(memberJoinDto.getLoginId())
+                    .password(bCryptPasswordEncoder.encode(rawPassword))
+                    .role("ROLE_USER")
+                    .build()).getId();
         }
         else{
             throw new IllegalStateException("이미 존재 하는 회원");

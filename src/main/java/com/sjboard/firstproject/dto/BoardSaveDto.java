@@ -16,16 +16,18 @@ public class BoardSaveDto {
 
     private String author;
 
-
+    private Member member;
 
     @Builder
-    public BoardSaveDto(String title, String content) {
+    public BoardSaveDto(String title, String content, String author, Member member) {
+        this.author = author;
         this.title = title;
         this.content = content;
+        this.member = member;
 
     }
 
     public Board toEntity(){
-        return Board.builder().title(title).content(content).author("관리자").build();
+        return Board.builder().title(title).content(content).author(author).member(member).build();
     }
 }

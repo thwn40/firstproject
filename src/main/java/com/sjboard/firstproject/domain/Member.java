@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Member {
+public class Member extends BaseTimeEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,16 +25,20 @@ public class Member {
 
     private String password;
 
-//    @OneToMany(mappedBy = "member")
-//    private List<Board> boardList = new ArrayList<>();
+    private String role;
+
+
+    @OneToMany(mappedBy = "member")
+    private List<Board> boardList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")
     private List<Comment> commentList = new ArrayList<>();
 
     @Builder
-    public Member(String loginId, String name, String password) {
+    public Member(String loginId, String name, String password, String role) {
         this.loginId = loginId;
         this.name = name;
         this.password = password;
+        this.role = role;
     }
 }

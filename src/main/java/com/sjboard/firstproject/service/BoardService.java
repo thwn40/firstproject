@@ -2,11 +2,13 @@ package com.sjboard.firstproject.service;
 
 
 import com.sjboard.firstproject.domain.Board;
+import com.sjboard.firstproject.domain.Member;
 import com.sjboard.firstproject.dto.BoardResponseDto;
 import com.sjboard.firstproject.dto.BoardSaveDto;
 import com.sjboard.firstproject.dto.BoardUpdateDto;
 import com.sjboard.firstproject.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +26,8 @@ public class BoardService {
     //게시글 저장
     @Transactional
     public Long save(BoardSaveDto boardSaveDto) {
+
+
         return boardRepository.save(boardSaveDto.toEntity()).getId();
     }
 
@@ -43,6 +47,7 @@ public class BoardService {
     public List<BoardResponseDto> findAllDesc() {
         return boardRepository.findAll(Sort.by(Sort.Direction.DESC, "id")).stream().map(BoardResponseDto :: new).collect(Collectors.toList());
     }
+
 
     //게시글 조회
     public BoardResponseDto findById(Long id) {

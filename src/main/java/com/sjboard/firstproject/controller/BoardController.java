@@ -1,5 +1,6 @@
 package com.sjboard.firstproject.controller;
 
+import com.sjboard.firstproject.auth.PrincipalDetails;
 import com.sjboard.firstproject.domain.Board;
 import com.sjboard.firstproject.dto.BoardResponseDto;
 import com.sjboard.firstproject.dto.BoardSaveDto;
@@ -8,6 +9,7 @@ import com.sjboard.firstproject.repository.BoardRepository;
 import com.sjboard.firstproject.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.data.ConditionalOnRepositoryType;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -26,9 +28,9 @@ private final BoardService boardService;
 }
 
 @PostMapping("/board/write")
-    public String boardWrite(String title, String content){
-//    Board board = Board.builder().title(boardSaveDto.getTitle()).member(boardSaveDto.getMember()).content(boardSaveDto.getContent()).build();
-    boardService.save(BoardSaveDto.builder().title(title).content(content).build());
+    public String boardWrite(String title, String content, @AuthenticationPrincipal PrincipalDetails principal){
+    System.out.println("principal = " + principal.getMember().getName());
+    boardService.save(BoardSaveDto.builder().title(title).content(content).author(principal.getMember().getName()).member(principal.getMember()).build());
     return "redirect:/";
 }
 

@@ -20,9 +20,9 @@ public class Board extends BaseTimeEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "member_id")
-//    private Member member;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     private String title;
 
@@ -34,10 +34,11 @@ public class Board extends BaseTimeEntity{
     List<Comment> comments = new ArrayList<>();
 
     @Builder
-    public Board(String author,String title, String content) {
+    public Board(String author,String title, String content, Member member) {
         this.author = author;
         this.title = title;
         this.content = content;
+        this.member = member;
     }
 
     public void update(String title, String content){
