@@ -1,12 +1,35 @@
 var main = {
     init : function(){
     var _this = this;
-    $('#btn-save').on('click', function() {
-    _this.save();
-    });
-    },
+    $('#btn-save').on('click', function(){
+                    _this.save();
+    })
+    $('#btn-comment-save').on('click', function() {
+    _this.commentSave();
+    })
 
-save:function(){
+    },
+     save : function () {
+            var data = {
+                title: $('#title').val(),
+                content:$('#content').val()
+            };
+
+            $.ajax({
+                type: 'POST',
+                 url: "/board/write",
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(data)
+            }).done(function(){//글 등록이 성공하면 메인페이지(/)로 이동
+                alert('글이 등록되었습니다.');
+                window.location.href = '/board';
+            }).fail(function (error){
+                alert(JSON.stringify(error));
+            });
+        },
+
+commentSave:function(){
     var data={
     content : $('#comment-content').val(),
     };
@@ -23,7 +46,7 @@ console.log(data);
     data: JSON.stringify(data)
     }).done(function(){
     alert("댓글이 등록되었습니다");
-    window.location.href = "/board/"+boardId;
+    location.href = "/board/"+boardId;
     }).fail(function(error){
     alert(boardId);
     alert(JSON.stringify(error));

@@ -21,6 +21,7 @@ public class BoardController {
 
     private final BoardService boardService;
 
+
     //게시글 작성폼
     @GetMapping("/board/write")
     public String boardWriteForm() {
@@ -28,11 +29,11 @@ public class BoardController {
     }
 
     //게시글 작성
+    @ResponseBody
     @PostMapping("/board/write")
-    public String boardWrite(String title, String content, @AuthenticationPrincipal MemberDetails principal) {
+    public Long boardWrite(@RequestBody BoardSaveDto boardSaveDto, @AuthenticationPrincipal MemberDetails principal) {
         System.out.println("principal = " + principal.getMember().getName());
-        boardService.save(BoardSaveDto.builder().title(title).content(content).author(principal.getMember().getName()).member(principal.getMember()).build());
-        return "redirect:/";
+        return  boardService.save(boardSaveDto,principal.getMember());
     }
 
 
@@ -77,7 +78,6 @@ public class BoardController {
     public Long commentSave(@PathVariable("id") Long boardId, @RequestBody CommentSaveDto commentSaveDto, @AuthenticationPrincipal MemberDetails principal){
 //        MemberVo member = MemberVo.from(principal.getMember());
         Member member = principal.getMember();
-        System.out.println("member = " + member.getId());
 
 
 //        boardService.commentSave(CommentSaveDto.builder().content().board().member().build());

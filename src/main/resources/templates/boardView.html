@@ -30,11 +30,15 @@
         <div class="card-header">댓글</div>
         <ul id ="comment--box" class="list-group" >
             <li class="list-group-item d-flex justify-content-between" th:each="comment : ${comments}">
-                <div><a th:text="${comment.content}"></a></div>
                 <div class="d-flex">
-                    <div><a th:text="${comment.member.name}"&nbsp;></a></div>
-                    <button  class="btn btn-primary btn-sm">삭제 </button>
+                    <div class="flex-shrink-0"></div>
+                    <div class="ms-3">
+                        <div class="fw-bold"><a th:text="${comment.member.name}"></a>
+                        </div>
+                        <a th:text="${comment.content}"></a>
+                    </div>
                 </div>
+                    <button  class="btn btn-primary btn-sm">삭제</button>
             </li>
         </ul>
     </div>
@@ -45,7 +49,7 @@
 <!--            <input name = "id" th:value="${#authentication.principal.member.id}"/>-->
             <div>
                 <div class ="card-body"><textarea id = "comment-content" class="form-control" rows="1"></textarea></div>
-                <div type="button" id="btn-save" class ="card-footer"><button class="btn btn-primary">등록</button></div>
+                <div  id="btn-comment-save" class ="card-footer"><button type="button" class="btn btn-primary">등록</button></div>
             </div>
 
         </form>

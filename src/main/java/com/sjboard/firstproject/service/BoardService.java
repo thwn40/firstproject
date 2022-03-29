@@ -29,10 +29,9 @@ public class BoardService {
 
     //게시글 저장
     @Transactional
-    public Long save(BoardSaveDto boardSaveDto) {
+    public Long save(BoardSaveDto boardSaveDto, Member member) {
 
-
-        return boardRepository.save(boardSaveDto.toEntity()).getId();
+        return boardRepository.save(boardSaveDto.toEntity(member)).getId();
     }
 
     //게시글 수정

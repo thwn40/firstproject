@@ -14,20 +14,15 @@ public class BoardSaveDto {
 
     private String content;
 
-    private String author;
-
-    private Member member;
 
     @Builder
-    public BoardSaveDto(String title, String content, String author, Member member) {
-        this.author = author;
+    public BoardSaveDto(String title, String content) {
         this.title = title;
         this.content = content;
-        this.member = member;
 
     }
 
-    public Board toEntity(){
-        return Board.builder().title(title).content(content).author(author).member(member).build();
+    public Board toEntity(Member member){
+        return Board.builder().member(member).author(member.getName()).title(title).content(content).build();
     }
 }
