@@ -30,7 +30,11 @@ public class Board extends BaseTimeEntity{
 
     private String content;
 
-    @OneToMany(mappedBy = "board")
+    @Column(columnDefinition = "integer default 0", nullable = false)
+    private int view;
+
+
+    @OneToMany(mappedBy = "board", fetch =FetchType.EAGER)
     List<Comment> comments = new ArrayList<>();
 
     @Builder
@@ -45,7 +49,5 @@ public class Board extends BaseTimeEntity{
         this.title = title;
         this.content = content;
     }
-    @Column(columnDefinition = "integer default 0", nullable = false)
-    private int view;
 
 }

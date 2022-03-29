@@ -2,26 +2,30 @@ package com.sjboard.firstproject.service;
 
 
 import com.sjboard.firstproject.domain.Board;
+import com.sjboard.firstproject.domain.Comment;
 import com.sjboard.firstproject.domain.Member;
 import com.sjboard.firstproject.dto.BoardResponseDto;
 import com.sjboard.firstproject.dto.BoardSaveDto;
 import com.sjboard.firstproject.dto.BoardUpdateDto;
+import com.sjboard.firstproject.dto.CommentSaveDto;
 import com.sjboard.firstproject.repository.BoardRepository;
+import com.sjboard.firstproject.repository.CommentRepository;
+import com.sjboard.firstproject.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class BoardService {
 
     private final BoardRepository boardRepository;
+    private final CommentRepository commentRepository;
+    private final MemberRepository memberRepository;
 
     //게시글 저장
     @Transactional
@@ -44,8 +48,9 @@ public class BoardService {
         }
     }
     @Transactional(readOnly = true)
-    public List<BoardResponseDto> findAllDesc() {
-        return boardRepository.findAll(Sort.by(Sort.Direction.DESC, "id")).stream().map(BoardResponseDto :: new).collect(Collectors.toList());
+    public Page<Board> findAllDesc(Pageable pageable) {
+        return boardRepository.findAll(pageable);
+//
     }
 
 
@@ -70,6 +75,17 @@ public class BoardService {
         } else {
             boardRepository.delete(byId.get());
         }
+    }
+
+    @Transactional
+    public Long commentSave(String content, Long memberId, Long boardId){
+        Member member = memberRepository.findById(memberId).orElseThrow(()->{return new IllegalArgumentException("회원이 없습니다");});
+        Board board = boardRepository.findById(boardId).orElseThrow(()->{return new IllegalArgumentException("게시글이 없습니다");});
+
+        Comment comment = CommentSaveDto.builder().board(board).content(content).member(member).build().toEntity();
+        return commentRepository.save(comment).getId();
+
+
     }
 
     @Transactional

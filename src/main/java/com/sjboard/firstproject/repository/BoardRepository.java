@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface BoardRepository extends JpaRepository<Board, Long> {
 
-    Page<Board> findAllDesc(Pageable pageable);
 
     @Modifying
     @Query("update Board b set b.view = b.view + 1 where b.id = :id")

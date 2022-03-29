@@ -16,11 +16,11 @@ import java.util.Collection;
 // user 오브젝트 타입 => UserDetails 타입 객체
 // Security Session => Authentication => UserDetailsType
 @Getter
-public class PrincipalDetails implements UserDetails {
+public class MemberDetails implements UserDetails {
 
 private Member member; //콤포지션
 
-    public PrincipalDetails(Member member){
+    public MemberDetails(Member member){
         this.member = member;
     }
 
