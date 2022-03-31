@@ -3,10 +3,15 @@ var main = {
     var _this = this;
     $('#btn-save').on('click', function(){
                     _this.save();
-    })
+    });
+
     $('#btn-comment-save').on('click', function() {
     _this.commentSave();
-    })
+    });
+
+    $('#btn-comment-delete').on('click', function() {
+        _this.commentDelete();
+    });
 
     },
      save : function () {
@@ -51,6 +56,28 @@ console.log(data);
     alert(boardId);
     alert(JSON.stringify(error));
     }); //ajax 통신을 이용해서 3개의 데이터를 json으로 변경하여 insert 요청을 한다
+},
+
+commentDelete:function(commentId,boardId){
+
+//    var commentId = $('#commentId').val();
+//    var boardId = $('#boardId').val();
+
+console.log(commentId);
+console.log(boardId);
+
+   $.ajax({
+    type: "DELETE",
+    url: "/board/comment/"+commentId,
+    dataType : 'json',
+    contentType:'application/json; charset=utf-8',
+    }).done(function(){
+    alert("댓글이 삭제되었습니다");
+    location.href = "/board/"+boardId;
+    }).fail(function(error){
+
+    alert(JSON.stringify(error));
+    }); //ajax 통신을 이용해서 3개의 데이터를 json으로  변경하여 insert 요청을 한다
 }
 
 };

@@ -84,5 +84,11 @@ public class BoardController {
         return boardService.commentSave(commentSaveDto.getContent(),member.getId(),boardId);
 
     }
+
+    @ResponseBody
+    @DeleteMapping("/board/comment/{id}")
+    public Long commentDelete(@PathVariable("id") Long id) {
+        return commentService.deleteById(id);
+    }
 }
 
