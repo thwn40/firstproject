@@ -10,8 +10,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -31,7 +33,7 @@ public class BoardController {
     //게시글 작성
     @ResponseBody
     @PostMapping("/board/write")
-    public Long boardWrite(@RequestBody BoardSaveDto boardSaveDto, @AuthenticationPrincipal MemberDetails principal) {
+    public Long boardWrite(@Valid @RequestBody BoardSaveDto boardSaveDto, @AuthenticationPrincipal MemberDetails principal) {
         System.out.println("principal = " + principal.getMember().getName());
         return  boardService.save(boardSaveDto,principal.getMember());
     }
@@ -45,6 +47,7 @@ public class BoardController {
         boardService.updateView(id);
         model.addAttribute("comments",comments);
         model.addAttribute("board", board);
+
         return "boardView";
     }
 
@@ -75,7 +78,7 @@ public class BoardController {
     //댓글 등록
     @ResponseBody
     @PostMapping("/board/{id}/comment")
-    public Long commentSave(@PathVariable("id") Long boardId, @RequestBody CommentSaveDto commentSaveDto, @AuthenticationPrincipal MemberDetails principal){
+    public Long commentSave(@PathVariable("id") Long boardId, @Valid @RequestBody CommentSaveDto commentSaveDto, @AuthenticationPrincipal MemberDetails principal){
 //        MemberVo member = MemberVo.from(principal.getMember());
         Member member = principal.getMember();
 
