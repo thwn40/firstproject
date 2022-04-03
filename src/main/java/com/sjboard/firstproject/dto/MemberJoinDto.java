@@ -1,13 +1,14 @@
 package com.sjboard.firstproject.dto;
 
 
+import com.sjboard.firstproject.domain.Member;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Range;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 
 
 @Getter
@@ -16,12 +17,14 @@ import javax.validation.constraints.NotNull;
 public class MemberJoinDto {
 
     @NotEmpty(message ="아이디는 필수 입니다")
+    @Email(message = "이메일 형식 이여야 합니다")
     private String loginId;
 
-    @NotEmpty(message = "이름은 필수에요")
+    @NotEmpty(message = "이름은 필수 입니다")
     private String name;
 
-    @NotBlank
+    @Size(min =8, message = "비밀번호는 최소 8자리 이상입니다")
+    @NotBlank(message = "비밀번호는 필수 입니다")
     private String password;
 
 }

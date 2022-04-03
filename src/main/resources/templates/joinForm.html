@@ -1,54 +1,6 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, 그리고 Bootstrap 기여자들">
-    <meta name="generator" content="Hugo 0.88.1">
-    <title>로그인창</title>
-
-    <link rel="canonical" href="https://getbootstrap.kr/docs/5.1/examples/sign-in/">
-
-
-    <!-- Bootstrap core CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <!-- Favicons -->
-    <link rel="apple-touch-icon" href="/docs/5.1/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
-    <link rel="icon" href="/docs/5.1/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
-    <link rel="icon" href="/docs/5.1/assets/img/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
-    <link rel="manifest" href="/docs/5.1/assets/img/favicons/manifest.json">
-    <link rel="mask-icon" href="/docs/5.1/assets/img/favicons/safari-pinned-tab.svg" color="#7952b3">
-    <link rel="icon" href="/docs/5.1/assets/img/favicons/favicon.ico">
-    <meta name="theme-color" content="#7952b3">
-
-
-    <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
-      }
-
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
-        }
-      }
-        .field-error {
-            border-color: #dc3545;
-            color: #dc3545;
-        }
-
-    </style>
-
-
-    <!-- Custom styles for this template -->
-    <link href="signin.css" rel="stylesheet">
-</head>
+<head th:replace="fragments/header :: header" />
 <body>
 <div th:replace="fragments/bodyHeader :: bodyHeader" />
 <div class="container w-50 justify-content-center align-items-center">
@@ -56,18 +8,23 @@
         <h1 class="h3 my-5 fw-normal">회원가입</h1>
         <div class="form-group">
             <label th:for="name">성명</label>
-            <input type="text" th:field="*{name}" class="form-control" id="name" name="name"
-                   placeholder="이름을 입력하세요"
+            <input type="text" th:field="*{name}" class="form-control" placeholder="이름을 입력하세요"
                    th:errorclass="field-error">
             <p th:if="${#fields.hasErrors('name')}"
                th:errors="*{name}">Incorrect data</p></div>
         <div class="form-group">
-            <label for="loginId">아이디</label>
-            <input type="text" th:field="*{loginId}" class="form-control" id="loginId" name="loginId" placeholder="아이디를 입력해 주세요">
+            <label th:for="loginId">아이디</label>
+            <input type="text" th:field="*{loginId}" class="form-control" id="loginId" placeholder="아이디를 입력해 주세요"
+            th:errorclass="field-error">
+            <p th:if="${#fields.hasErrors('loginId')}"
+               th:errors="*{loginId}">Incorrect data</p>
         </div>
         <div class="form-group">
             <label for="password">비밀번호</label>
-            <input type="password" th:field="*{password}" class="form-control" id="password" name="password" placeholder="비밀번호를 입력해주세요">
+            <input type="password" th:field="*{password}" class="form-control" id="password" placeholder="비밀번호를 입력해주세요"
+            th:errorclass="field-error">
+            <p th:if="${#fields.hasErrors('password')}"
+               th:errors="*{password}">Incorrect data</p>
         </div>
         <!--            <div class="form-group">-->
         <!--                <label for="inputPasswordCheck">비밀번호 확인</label>-->
@@ -85,7 +42,7 @@
         <!--            </div>-->
 
         <div class="form-group text-center my-3">
-            <button type="submit" id="join-submit" class="btn btn-primary">
+            <button type="submit" id="btn-join" class="btn btn-primary">
                 회원가입<i class="fa fa-check spaceLeft"></i>
             </button>
             <!--                <button type="submit" class="btn btn-warning">-->
@@ -96,6 +53,6 @@
     </form>
     <div th:replace="fragments/footer :: footer" />
 </div>
-
+<script src="/js/index.js"></script>
 </body>
 </html>

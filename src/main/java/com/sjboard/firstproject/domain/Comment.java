@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -27,10 +29,25 @@ public class Comment extends BaseTimeEntity {
     @Column(nullable = false, length = 10000)
     private String content;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Comment parent;
+
+
+    private boolean isRemoved= false;
+
+// 부모 깊이 순서
+
+    @OneToMany(mappedBy = "parent", orphanRemoval = true)
+    private List<Comment> children = new ArrayList<>();
+
     @Builder
     public Comment(Board board, Member member, String content) {
         this.board = board;
         this.member = member;
+        this.content = content;
+    }
+
+    public void update(String content){
         this.content = content;
     }
 

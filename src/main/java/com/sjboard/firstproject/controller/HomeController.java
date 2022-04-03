@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -59,15 +60,18 @@ public class HomeController {
     }
 
     @PostMapping("/join")
-    public String join(@Valid MemberJoinDto memberJoinDto, BindingResult bindingResult){
+    public String join(@Valid  MemberJoinDto memberJoinDto, BindingResult bindingResult){
 
         if (bindingResult.hasErrors()) {
             log.info("errors={}", bindingResult);
-            return "/joinForm";
+            return "joinForm";
         }
-        memberService.Join(memberJoinDto);
 
-        return "redirect:/loginForm";
+
+        memberService.Join(memberJoinDto);
+        return "loginForm";
+
+
     }
 
     @GetMapping("/joinProc")

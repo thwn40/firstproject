@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,16 +27,23 @@ public class BoardController {
 
     //게시글 작성폼
     @GetMapping("/board/write")
-    public String boardWriteForm() {
+    public String boardWriteForm(Model model) {
+        model.addAttribute("boardSaveDto",new BoardSaveDto());
         return "boardSaveForm";
     }
 
     //게시글 작성
-    @ResponseBody
+
     @PostMapping("/board/write")
-    public Long boardWrite(@Valid @RequestBody BoardSaveDto boardSaveDto, @AuthenticationPrincipal MemberDetails principal) {
+    public String boardWrite(@Valid BoardSaveDto boardSaveDto, @AuthenticationPrincipal MemberDetails principal, BindingResult bindingResult) {
+        System.out.println("boardSaveDto.getContent() = " + boardSaveDto.getContent());
+        System.out.println("boardSaveDto.getTitle() = " + boardSaveDto.getTitle());
+        if(bindingResult.hasErrors()){
+            return "redirect:/";
+        }
         System.out.println("principal = " + principal.getMember().getName());
-        return  boardService.save(boardSaveDto,principal.getMember());
+        boardService.save(boardSaveDto,principal.getMember());
+        return "redirect:/board";
     }
 
 
@@ -85,6 +93,14 @@ public class BoardController {
 
 //        boardService.commentSave(CommentSaveDto.builder().content().board().member().build());
         return boardService.commentSave(commentSaveDto.getContent(),member.getId(),boardId);
+
+    }
+
+    @PostMapping("board/comment/{id}/update")
+    @ResponseBody
+    public Long commentUpdate(@PathVariable("id") Long commentId, @Valid @RequestBody CommentUpdateDto commentUpdateDto){
+
+        return commentService.update(commentId,commentUpdateDto);
 
     }
 

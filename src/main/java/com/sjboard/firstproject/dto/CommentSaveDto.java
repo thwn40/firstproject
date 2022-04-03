@@ -13,9 +13,9 @@ import javax.validation.constraints.NotNull;
 @Getter
 @NoArgsConstructor
 public class CommentSaveDto {
-    @NotNull
+
     private Member member;
-    @NotNull
+
     private Board board;
     @NotBlank
     private String content;
