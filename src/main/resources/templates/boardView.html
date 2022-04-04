@@ -4,7 +4,7 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="fragments/header :: header" />
 <body>
-
+<!--내용 부분-->
 <div class="container">
     <div th:replace="fragments/bodyHeader :: bodyHeader" />
         <div class="my-3">
@@ -16,59 +16,41 @@
             <textarea class="form-control" name="content" id ="content"  rows="8" readonly th:text="${board.content}"></textarea>
 
         </div>
+<!--내용 부분-->
 
 
-
-
+<!--댓글 부분-->
     <div class ="card">
         <div class="card-header">댓글</div>
         <ul id ="comment--box" class="list-group" th:each="comment : ${comments}">
             <li class="list-group-item d-flex justify-content-between" >
                 <div class="d-flex">
                     <div class="flex-shrink-0"></div>
-                    <div class="ms-3">
+                    <div class="ms-2" th:if="${comment.parent}==null">
                         <div class="fw-bold"><a th:text="${comment.member.name}"></a>
+                            <small th:text="${#temporals.format(board.modifiedDate,'yyyy-MM-dd HH:mm')}"></small>
+                        </div>
+                        <p th:text="${comment.content}"></p>
+                    </div>
+                    <div class="ms-5" th:unless="${comment.parent}==null">
+                        <div class="fw-bold">ㄴ<a th:text="${comment.member.name}"></a>
                             <small th:text="${#temporals.format(board.modifiedDate,'yyyy-MM-dd HH:mm')}"></small>
                         </div>
                         <p th:text="${comment.content}"></p>
                     </div>
 
 
-                </div>
-
-
-<!--                    <button type="button" class="btn btn-primary"  data-toggle="modal" data-target="#exampleModal">수정</button>-->
-<!--                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">-->
-<!--                        <div class="modal-dialog">-->
-<!--                            <div class="modal-content">-->
-<!--                                <div class="modal-header">-->
-<!--                                    <h5 class="modal-title" id="exampleModalLabel">댓글 수정</h5>-->
-<!--                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
-<!--                                        <span aria-hidden="true">&times;</span>-->
-<!--                                    </button>-->
-<!--                                </div>-->
-<!--                                <div class="modal-body">-->
-<!--                                    <form>-->
-<!--                                        <div class="form-group">-->
-<!--                                            <label for="comment-update-content" class="col-form-label">댓글:</label>-->
-<!--                                            <textarea class="form-control" id="comment-update-content"></textarea>-->
-<!--                                        </div>-->
-<!--                                    </form>-->
-<!--                                </div>-->
-<!--                                <div class="modal-footer">-->
-<!--                                    <form>-->
-<!--                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>-->
-<!--                                        <button type="button" class="btn btn-primary" id="btn-comment-update" >수정</button>-->
-<!--                                    </form>-->
-
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-
+                    </div>
 
             </li>
-            <div>
+            <div class ="ms-2" th:if="${comment.parent}==null">
+                <button class="btn btn-warning btn-sm" data-toggle="collapse"
+                        th:data-target="${'#comment-reply-'+comment.id}" aria-expanded="false">답글
+                </button>
+                <button type="button" th:onclick="main.commentDelete([[${comment.id}]],[[${board.id}]])"
+                        class="btn btn-primary btn-sm">삭제</button>
+            </div>
+            <div class ="ms-5" th:unless="${comment.parent}==null">
                 <button class="btn btn-warning btn-sm" data-toggle="collapse"
                         th:data-target="${'#comment-reply-'+comment.id}" aria-expanded="false">답글
                 </button>
@@ -78,20 +60,24 @@
 
             <div class="collapse" th:id="${'comment-reply-'+comment.id}">
                 <div class="card card-body">
-                    <form id="comment1">
-                        <input type="hidden" id="boardId1" name = "boardId" th:value="${board.id}"/>
+                    <form th:id="${'comment'+comment.id}" >
+                        <input type="hidden" th:id="${'boardId'+board.id}" name = "boardId" th:value="${board.id}"/>
                         <!--            <input name = "id" th:value="${#authentication.principal.member.id}"/>-->
                         <div>
-                            <div class ="card-body"><textarea id = "comment-content1" class="form-control" rows="1"></textarea></div>
-                            <div  id="btn-comment-save1" class ="card-footer"><button type="button" class="btn btn-primary">등록</button></div>
+                            <div class ="card-body"><textarea th:id="${'child-content'+comment.id}" class="form-control" rows="1"></textarea></div>
+                            <div class ="card-footer">
+                                <input type="hidden"  th:id="${'parentId'+comment.id}" name = "parentId" th:value="${comment.id}"/>
+                                <button  type="button" th:onclick="main.childCommentSave([[${comment.id}]],[[${board.id}]])"   class="btn btn-primary">등록</button>
+                            </div>
                         </div>
                     </form>
+
                 </div>
             </div>
         </ul>
-
     </div>
-    <br />
+<!--댓글부분-->
+    <br/>
 
         <form id="comment">
             <input type="hidden" id="boardId" name = "boardId" th:value="${board.id}"/>
@@ -121,3 +107,32 @@
 <script src="/js/index.js"></script>
 </body>
 </html>
+
+<!--                    <button type="button" class="btn btn-primary"  data-toggle="modal" data-target="#exampleModal">수정</button>-->
+<!--                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">-->
+<!--                        <div class="modal-dialog">-->
+<!--                            <div class="modal-content">-->
+<!--                                <div class="modal-header">-->
+<!--                                    <h5 class="modal-title" id="exampleModalLabel">댓글 수정</h5>-->
+<!--                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+<!--                                        <span aria-hidden="true">&times;</span>-->
+<!--                                    </button>-->
+<!--                                </div>-->
+<!--                                <div class="modal-body">-->
+<!--                                    <form>-->
+<!--                                        <div class="form-group">-->
+<!--                                            <label for="comment-update-content" class="col-form-label">댓글:</label>-->
+<!--                                            <textarea class="form-control" id="comment-update-content"></textarea>-->
+<!--                                        </div>-->
+<!--                                    </form>-->
+<!--                                </div>-->
+<!--                                <div class="modal-footer">-->
+<!--                                    <form>-->
+<!--                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>-->
+<!--                                        <button type="button" class="btn btn-primary" id="btn-comment-update" >수정</button>-->
+<!--                                    </form>-->
+
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->

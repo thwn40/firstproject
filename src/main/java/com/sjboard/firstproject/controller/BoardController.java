@@ -7,6 +7,7 @@ import com.sjboard.firstproject.dto.*;
 import com.sjboard.firstproject.service.BoardService;
 import com.sjboard.firstproject.service.CommentService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +19,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @Controller
+@Slf4j
 @RequiredArgsConstructor
 public class BoardController {
     private final CommentService commentService;
@@ -37,6 +39,7 @@ public class BoardController {
     @PostMapping("/board/write")
     public String boardWrite(@Valid BoardSaveDto boardSaveDto, @AuthenticationPrincipal MemberDetails principal, BindingResult bindingResult) {
         System.out.println("boardSaveDto.getContent() = " + boardSaveDto.getContent());
+
         System.out.println("boardSaveDto.getTitle() = " + boardSaveDto.getTitle());
         if(bindingResult.hasErrors()){
             return "redirect:/";
@@ -55,6 +58,7 @@ public class BoardController {
         boardService.updateView(id);
         model.addAttribute("comments",comments);
         model.addAttribute("board", board);
+        model.addAttribute("commentSaveDto", new CommentSaveDto());
 
         return "boardView";
     }
@@ -86,13 +90,19 @@ public class BoardController {
     //댓글 등록
     @ResponseBody
     @PostMapping("/board/{id}/comment")
-    public Long commentSave(@PathVariable("id") Long boardId, @Valid @RequestBody CommentSaveDto commentSaveDto, @AuthenticationPrincipal MemberDetails principal){
+    public Long commentSave(@PathVariable("id") Long boardId, @RequestParam(required = false) Long parentId, @Valid @RequestBody CommentSaveDto commentSaveDto, @AuthenticationPrincipal MemberDetails principal){
 //        MemberVo member = MemberVo.from(principal.getMember());
         Member member = principal.getMember();
+        log.info("{}", parentId);
+        if(parentId==null){
+            return boardService.commentParentSave(commentSaveDto.getContent(),member.getId(),boardId);
+        }
+        else{
+            return boardService.commentChildrenSave(commentSaveDto.getContent(),member.getId(),boardId,parentId);
+        }
 
 
 //        boardService.commentSave(CommentSaveDto.builder().content().board().member().build());
-        return boardService.commentSave(commentSaveDto.getContent(),member.getId(),boardId);
 
     }
 

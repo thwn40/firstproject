@@ -32,7 +32,6 @@ public class Comment extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Comment parent;
 
-
     private boolean isRemoved= false;
 
 // 부모 깊이 순서
@@ -40,11 +39,18 @@ public class Comment extends BaseTimeEntity {
     @OneToMany(mappedBy = "parent", orphanRemoval = true)
     private List<Comment> children = new ArrayList<>();
 
+
+
     @Builder
-    public Comment(Board board, Member member, String content) {
+    public Comment(Board board, Member member, String content, Comment parent) {
         this.board = board;
         this.member = member;
         this.content = content;
+        this.parent = parent;
+    }
+
+    public void addChildren(Comment comment){
+        children.add(comment);
     }
 
     public void update(String content){

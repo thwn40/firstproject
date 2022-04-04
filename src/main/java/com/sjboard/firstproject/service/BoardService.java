@@ -12,14 +12,17 @@ import com.sjboard.firstproject.repository.BoardRepository;
 import com.sjboard.firstproject.repository.CommentRepository;
 import com.sjboard.firstproject.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class BoardService {
 
@@ -76,14 +79,38 @@ public class BoardService {
         }
     }
 
+    // 부모 댓글 저장
     @Transactional
-    public Long commentSave(String content, Long memberId, Long boardId){
+    public Long commentParentSave(String content, Long memberId, Long boardId){
+
         Member member = memberRepository.findById(memberId).orElseThrow(()->{return new IllegalArgumentException("회원이 없습니다");});
+
         Board board = boardRepository.findById(boardId).orElseThrow(()->{return new IllegalArgumentException("게시글이 없습니다");});
 
         Comment comment = CommentSaveDto.builder().board(board).content(content).member(member).build().toEntity();
-        return commentRepository.save(comment).getId();
 
+        return commentRepository.save(comment).getId();
+    }
+
+    //자식 댓글 저장
+    @Transactional
+    public Long commentChildrenSave(String content, Long memberId, Long boardId,Long parentId){
+
+        Member member = memberRepository.findById(memberId).orElseThrow(()->{return new IllegalArgumentException("회원이 없습니다");});
+
+        Board board = boardRepository.findById(boardId).orElseThrow(()->{return new IllegalArgumentException("게시글이 없습니다");});
+
+        Comment parentComment = commentRepository.findById(parentId).orElseThrow(()->{return new IllegalArgumentException("부모 댓글이 없습니다");});
+
+        Comment childComment = CommentSaveDto.builder().board(board).content(content).member(member).parentComment(parentComment).build().toEntity();
+
+        parentComment.addChildren(childComment);
+
+        for (Comment child : parentComment.getChildren()) {
+            log.info("comment의 내용 = {}", child.getContent());
+        }
+
+        return commentRepository.save(childComment).getId();
 
     }
 
