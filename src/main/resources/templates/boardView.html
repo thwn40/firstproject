@@ -118,8 +118,15 @@
                     <form th:id="${'comment'+comment.id}" >
                         <input type="hidden" th:id="${'boardId'+board.id}" name = "boardId" th:value="${board.id}"/>
                         <!--            <input name = "id" th:value="${#authentication.principal.member.id}"/>-->
-                        <div>
+                        <div  sec:authorize="isAuthenticated()">
                             <div class ="card-body"><textarea th:id="${'child-content'+comment.id}" class="form-control" rows="1"></textarea></div>
+                            <div class ="card-footer">
+                                <input type="hidden"  th:id="${'parentId'+comment.id}" name = "parentId" th:value="${comment.id}"/>
+                                <button  type="button" th:onclick="main.childCommentSave([[${comment.id}]],[[${board.id}]])"   class="btn-sm btn-primary float-right">등록</button>
+                            </div>
+                        </div>
+                        <div  sec:authorize="!isAuthenticated()">
+                            <div class ="card-body"><textarea th:id="${'child-content'+comment.id}" class="form-control" rows="1" placeholder="로그인을 하십쇼"></textarea></div>
                             <div class ="card-footer">
                                 <input type="hidden"  th:id="${'parentId'+comment.id}" name = "parentId" th:value="${comment.id}"/>
                                 <button  type="button" th:onclick="main.childCommentSave([[${comment.id}]],[[${board.id}]])"   class="btn-sm btn-primary float-right">등록</button>
@@ -138,13 +145,20 @@
         <form id="comment">
             <input type="hidden" id="boardId" name = "boardId" th:value="${board.id}"/>
 <!--            <input name = "id" th:value="${#authentication.principal.member.id}"/>-->
-            <div>
+            <div  sec:authorize="isAuthenticated()">
                 <div>
                     <textarea id = "comment-content" class="form-control" rows="1"></textarea>
                     <div class="text-end my-3">
                         <button  id="btn-comment-save" type="button" class="btn-sm btn-primary">등록</button>
                     </div>
                    </div>
+            </div>
+            <div  sec:authorize="!isAuthenticated()">
+                <div>
+                    <textarea placeholder="로그인을 하십쇼" class="form-control" rows="1"></textarea>
+                    <div class="text-end my-3">
+                    </div>
+                </div>
             </div>
         </form>
 </div>
