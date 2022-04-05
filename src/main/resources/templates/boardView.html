@@ -19,10 +19,11 @@
 <!--내용 부분-->
 
 
-<!--댓글 부분-->
+<!--부모댓글 부분-->
     <div class ="card">
         <div class="card-header">댓글</div>
-        <ul id ="comment--box" class="list-group" th:each="comment : ${comments}">
+        <div th:each="comment : ${comments}">
+        <ul id ="comment--box" class="list-group" th:if="${comment.parent}==null">
             <li class="list-group-item d-flex justify-content-between" >
                 <div class="d-flex">
                     <div class="flex-shrink-0"></div>
@@ -44,20 +45,74 @@
 
             </li>
             <div class ="ms-2" th:if="${comment.parent}==null">
-                <button class="btn btn-warning btn-sm" data-toggle="collapse"
+                <button type="button" th:onclick="main.commentDelete([[${comment.id}]],[[${board.id}]])"
+                        class="btn btn-primary btn-sm float-right">삭제</button>
+                <button class="btn btn-warning btn-sm float-right" data-toggle="collapse"
                         th:data-target="${'#comment-reply-'+comment.id}" aria-expanded="false">답글
                 </button>
-                <button type="button" th:onclick="main.commentDelete([[${comment.id}]],[[${board.id}]])"
-                        class="btn btn-primary btn-sm">삭제</button>
+
             </div>
             <div class ="ms-5" th:unless="${comment.parent}==null">
-                <button class="btn btn-warning btn-sm" data-toggle="collapse"
+                <button type="button" th:onclick="main.commentDelete([[${comment.id}]],[[${board.id}]])"
+                        class="btn btn-primary btn-sm float-right">삭제</button>
+                <button class="btn btn-warning btn-sm float-right" data-toggle="collapse"
                         th:data-target="${'#comment-reply-'+comment.id}" aria-expanded="false">답글
                 </button>
-                <button type="button" th:onclick="main.commentDelete([[${comment.id}]],[[${board.id}]])"
-                        class="btn btn-primary btn-sm">삭제</button>
             </div>
+            <!--답글 입력하는 부분-->
+            <div class="collapse" th:id="${'comment-reply-'+comment.id}">
+                <div class="card card-body">
+                    <form th:id="${'comment'+comment.id}" >
+                        <input type="hidden" th:id="${'boardId'+board.id}" name = "boardId" th:value="${board.id}"/>
+                        <!--            <input name = "id" th:value="${#authentication.principal.member.id}"/>-->
+                        <div>
+                            <div class ="card-body"><textarea th:id="${'child-content'+comment.id}" class="form-control" rows="1"></textarea></div>
 
+                                <input type="hidden"  th:id="${'parentId'+comment.id}" name = "parentId" th:value="${comment.id}"/>
+                                <button  type="button" th:onclick="main.childCommentSave([[${comment.id}]],[[${board.id}]])"  class="btn-sm btn-primary float-right">등록</button>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </ul>
+        <!--답글 입력하는 부분-->
+        <ul id ="comment--box2" class="list-group" th:each="comment : ${comment.children}">
+            <li class="list-group-item d-flex justify-content-between" >
+                <div class="d-flex">
+                    <div class="flex-shrink-0"></div>
+                    <div class="ms-2" th:if="${comment.parent}==null">
+                        <div class="fw-bold"><a th:text="${comment.member.name}"></a>
+                            <small th:text="${#temporals.format(board.modifiedDate,'yyyy-MM-dd HH:mm')}"></small>
+                        </div>
+                        <p th:text="${comment.content}"></p>
+                    </div>
+                    <div class="ms-5" th:unless="${comment.parent}==null">
+                        <div class="fw-bold">ㄴ<a th:text="${comment.member.name}"></a>
+                            <small th:text="${#temporals.format(board.modifiedDate,'yyyy-MM-dd HH:mm')}"></small>
+                        </div>
+                        <p th:text="${comment.content}"></p>
+                    </div>
+
+
+                </div>
+
+            </li>
+            <div class ="ms-2" th:if="${comment.parent}==null">
+<!--                <button class="btn btn-warning btn-sm" data-toggle="collapse"-->
+<!--                        th:data-target="${'#comment-reply-'+comment.id}" aria-expanded="false">답글-->
+<!--                </button>-->
+                <button type="button" th:onclick="main.commentDelete([[${comment.id}]],[[${board.id}]])"
+                        class="btn btn-primary btn-sm float-right">삭제</button>
+            </div>
+            <div class ="ms-5" th:unless="${comment.parent}==null">
+<!--                <button class="btn btn-warning btn-sm" data-toggle="collapse"-->
+<!--                        th:data-target="${'#comment-reply-'+comment.id}" aria-expanded="false">답글-->
+<!--                </button>-->
+                <button type="button" th:onclick="main.commentDelete([[${comment.id}]],[[${board.id}]])"
+                        class="btn btn-primary btn-sm float-right">삭제</button>
+            </div>
+            <!--답글 입력하는 부분-->
             <div class="collapse" th:id="${'comment-reply-'+comment.id}">
                 <div class="card card-body">
                     <form th:id="${'comment'+comment.id}" >
@@ -67,37 +122,42 @@
                             <div class ="card-body"><textarea th:id="${'child-content'+comment.id}" class="form-control" rows="1"></textarea></div>
                             <div class ="card-footer">
                                 <input type="hidden"  th:id="${'parentId'+comment.id}" name = "parentId" th:value="${comment.id}"/>
-                                <button  type="button" th:onclick="main.childCommentSave([[${comment.id}]],[[${board.id}]])"   class="btn btn-primary">등록</button>
+                                <button  type="button" th:onclick="main.childCommentSave([[${comment.id}]],[[${board.id}]])"   class="btn-sm btn-primary float-right">등록</button>
                             </div>
                         </div>
                     </form>
-
                 </div>
             </div>
+            <!--답글 입력하는 부분-->
         </ul>
+        </div>
     </div>
 <!--댓글부분-->
     <br/>
-
+<div>
         <form id="comment">
             <input type="hidden" id="boardId" name = "boardId" th:value="${board.id}"/>
 <!--            <input name = "id" th:value="${#authentication.principal.member.id}"/>-->
             <div>
-                <div class ="card-body"><textarea id = "comment-content" class="form-control" rows="1"></textarea></div>
-                <div  id="btn-comment-save" class ="card-footer"><button type="button" class="btn btn-primary">등록</button></div>
+                <div>
+                    <textarea id = "comment-content" class="form-control" rows="1"></textarea>
+                    <div class="text-end my-3">
+                        <button  id="btn-comment-save" type="button" class="btn-sm btn-primary">등록</button>
+                    </div>
+                   </div>
             </div>
         </form>
+</div>
 
 
-
-
+<div class ="my-1">
     <form id="blogForm" method="POST">
-        <button type="button" class="btn btn-success" onclick="location.href='home.html" th:onclick="|location.href='@{/board}'|">뒤로가기</button>
-        <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/board/{Id}/update(Id=${board.id})}'|">수정</button>
+        <button type="button" class="btn btn-success " onclick="location.href='home.html" th:onclick="|location.href='@{/board}'|">뒤로가기</button>
+        <button type="button" class="btn btn-primary " th:onclick="|location.href='@{/board/{Id}/update(Id=${board.id})}'|">수정</button>
         <input type="hidden" name="_method" value="DELETE"/>
-        <button class="btn btn-warning" th:onlick="|location.href='@{/board/{Id}/(Id=${board.id})}'|">삭제</button>
-
+        <button class="btn btn-warning " th:onlick="|location.href='@{/board/{Id}/(Id=${board.id})}'|">삭제</button>
     </form>
+</div>
     <div th:replace="fragments/footer :: footer" />
 </div>
 

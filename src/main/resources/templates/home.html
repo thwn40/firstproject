@@ -31,12 +31,12 @@
         <div class="text-end"><a class="btn btn-primary" th:href="@{/board/write}" role="button">글쓰기</a></div>
         <div class = "column">
             <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item"><a class="page-link" th:href="@{/(page=${board.number - 1})}">Previous</a></li>
-<!--                    <li class="page-item"><a class="page-link" href="#">1</a></li>-->
-<!--                    <li class="page-item"><a class="page-link" href="#">2</a></li>-->
-<!--                    <li class="page-item"><a class="page-link" href="#">3</a></li>-->
-                    <li class="page-item"><a class="page-link" th:href="@{/(page=${board.number + 1})}">Next</a></li>
+                <ul class="pagination justify-content-center"  th:with="start=${(board.number/5)*5 + 1},
+                  end=(${(board.totalPages == 0) ? 1 : (start + (5 - 1) < board.totalPages ? start + (5 - 1) : board.totalPages)})">
+                    <li class="page-item" th:if="${start > 1}"><a class="page-link" th:href="@{/(page=${board.number - 1})}">Previous</a></li>
+                    <li th:each="i : ${#numbers.sequence(start,end)}"  th:class="${i == board.number + 1} ? 'page-item active' : 'page-item'">
+                        <a class="page-link" th:href="@{/(page=${i-1})}" th:text="${i}"></a></li>
+                    <li class="page-item"  th:if="${end < board.totalPages}"><a class="page-link" th:href="@{/(page=${board.number + 1})}">Next</a></li>
 
 
                 </ul>

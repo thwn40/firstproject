@@ -55,7 +55,7 @@ public class BoardController {
     public String boardView(@PathVariable Long id, Model model) {
         BoardResponseDto board = boardService.findById(id);
         List<Comment> comments = commentService.findAllByBoardId(id);
-        boardService.updateView(id);
+        boardService.hit(id,false);
         model.addAttribute("comments",comments);
         model.addAttribute("board", board);
         model.addAttribute("commentSaveDto", new CommentSaveDto());
@@ -93,6 +93,7 @@ public class BoardController {
     public Long commentSave(@PathVariable("id") Long boardId, @RequestParam(required = false) Long parentId, @Valid @RequestBody CommentSaveDto commentSaveDto, @AuthenticationPrincipal MemberDetails principal){
 //        MemberVo member = MemberVo.from(principal.getMember());
         Member member = principal.getMember();
+        boardService.hit(boardId,true);
         log.info("{}", parentId);
         if(parentId==null){
             return boardService.commentParentSave(commentSaveDto.getContent(),member.getId(),boardId);

@@ -40,7 +40,7 @@ var main = {
                     contentType: 'application/json; charset=utf-8',
                     data: JSON.stringify(data)
                 }).done(function(){//글 등록이 성공하면 메인페이지(/)로 이동
-                    alert('글이 등록되었습니다.');
+
                     window.location.href = '/board';
                 }).fail(function (error){
                     alert(JSON.stringify(error));
@@ -88,7 +88,7 @@ if(data['content'] === ""|| data['content'] ===" "){
     contentType:'application/json; charset=utf-8',
     data: JSON.stringify(data)
     }).done(function(){
-    alert("댓글이 등록되었습니다");
+
     location.href = "/board/"+boardId;
     }).fail(function(error){
     alert(JSON.stringify(error));
@@ -115,7 +115,7 @@ childCommentSave:function(parentId, boardId,content){
     contentType:'application/json; charset=utf-8',
     data: JSON.stringify(data)
     }).done(function(){
-    alert("댓글이 등록되었습니다");
+
     location.href = "/board/"+boardId;
     }).fail(function(error){
     alert(JSON.stringify(error));
@@ -143,7 +143,7 @@ commentUpdate:function(){
     contentType:'application/json; charset=utf-8',
     data: JSON.stringify(data)
     }).done(function(){
-    alert("댓글이 수정되었습니다");
+
     location.href = "/board/"+boardId;
     }).fail(function(error){
     alert(JSON.stringify(error));
@@ -163,7 +163,7 @@ console.log(commentId);
     dataType : 'json',
     contentType:'application/json; charset=utf-8',
     }).done(function(){
-    alert("댓글이 삭제되었습니다");
+
     location.href = "/board/"+boardId;
     }).fail(function(error){
 

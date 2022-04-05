@@ -106,16 +106,20 @@ public class BoardService {
 
         parentComment.addChildren(childComment);
 
-        for (Comment child : parentComment.getChildren()) {
-            log.info("comment의 내용 = {}", child.getContent());
-        }
+
+            log.info("자식 댓글의 갯수 = {}", parentComment.getChildren().size());
+
 
         return commentRepository.save(childComment).getId();
 
     }
 
     @Transactional
-    public int updateView(Long id) { return boardRepository.updateView(id); }
+    public int hit(Long id,boolean duplicate) {
+        if(duplicate){
+            return boardRepository.minusView(id);
+        }
+        return boardRepository.updateView(id); }
 
 }
 
