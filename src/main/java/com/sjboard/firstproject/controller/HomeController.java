@@ -31,7 +31,7 @@ public class HomeController {
     private final BoardService boardService;
 
     @GetMapping(value = {"/","/board"})
-    public String Home(Model model,@PageableDefault(page = 0, size=5, sort="id", direction = Sort.Direction.DESC) Pageable pageable) {
+    public String Home(Model model,@PageableDefault(page = 0, size=5, sort="createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<Board> board = boardService.findAllDesc(pageable);
         model.addAttribute("board", board);
 

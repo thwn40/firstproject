@@ -10,7 +10,7 @@
             <table class="table">
                 <thead>
                 <tr>
-                    <th>#</th>
+<!--                    <th>#</th>-->
                     <th>제목</th>
                     <th>글쓴이</th>
                     <th>작성일</th>
@@ -19,7 +19,7 @@
                 </thead>
                 <tbody>
                 <tr th:each="board : ${board.content}">
-                    <td><a  th:text="${board.id}">1</a></td>
+<!--                    <td><a  th:text="${board.id}">1</a></td>-->
                     <td><a  th:href="@{|/board/${board.id}|}" th:text="${board.title}" >제목</a></td>
                     <td><a th:text="${board.author}"></a></td>
                     <td  th:text="${#temporals.format(board.modifiedDate,'yyyy-MM-dd HH:mm:ss')}">날짜</td>
