@@ -67,6 +67,11 @@ public class BoardService {
         }
     }
 
+    public Page<Board> findByTitleContainingOrContentContaining(String title, String content,Pageable pageable){
+        Page<Board> byTitleContainingOrContentContaining = boardRepository.findByTitleContainingOrContentContaining(title, content, pageable);
+        return byTitleContainingOrContentContaining;
+    }
+
     //게시글 삭제
     @Transactional
     public void deleteById(Long id) {

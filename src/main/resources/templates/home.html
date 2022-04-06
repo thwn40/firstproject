@@ -4,26 +4,34 @@
 <head th:replace="fragments/header :: header" />
 <body>
 
-    <div class="container">
+    <div class="container mt-4">
         <div th:replace="fragments/bodyHeader :: bodyHeader" />
+        <h1 class = "mt-3">게시판</h1>
         <div>
+            <form class="form-inline d-flex justify-content-start" method ="GET" th:action="@{/board}">
+                <div class="form-group mb-2">
+                    <input type="text" class="form-control form-control-dark "  aria-label="Search" id="searchText" name="searchText" th:value="${param.searchText}">
+                </div>
+                <button type="submit" class="btn btn-primary mb-2 ml-2">검색</button>
+            </form>
             <table class="table">
                 <thead>
-                <tr>
+
+                <tr class="text-center">
 <!--                    <th>#</th>-->
-                    <th>제목</th>
-                    <th>글쓴이</th>
-                    <th>작성일</th>
-                    <th>조회수</th>
+                    <th class="w-50">제목</th>
+                    <th >글쓴이</th>
+                    <th >조회수</th>
+                    <th >작성일</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="board : ${board.content}">
 <!--                    <td><a  th:text="${board.id}">1</a></td>-->
                     <td><a  th:href="@{|/board/${board.id}|}" th:text="${board.title}" >제목</a></td>
-                    <td><a th:text="${board.author}"></a></td>
-                    <td  th:text="${#temporals.format(board.modifiedDate,'yyyy-MM-dd HH:mm:ss')}">날짜</td>
-                    <td th:text="${board.view}" >0</td>
+                    <td class="text-center"><a th:text="${board.author}"></a></td>
+                    <td class="text-center" th:text="${board.view}" >0</td>
+                    <td  class="text-center" th:text="${#temporals.format(board.modifiedDate,'yyyy-MM-dd HH:mm:ss')}">날짜</td>
                 </tr>
                 </tbody>
             </table>
@@ -34,10 +42,10 @@
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-center"  th:with="start=${(board.number/5)*5 + 1},
                   end=(${(board.totalPages == 0) ? 1 : (start + (5 - 1) < board.totalPages ? start + (5 - 1) : board.totalPages)})">
-                    <li class="page-item" th:if="${start > 1}"><a class="page-link" th:href="@{/(page=${board.number - 1})}">Previous</a></li>
+                    <li class="page-item" th:if="${start > 1}"><a class="page-link" th:href="@{/(page=${board.number - 1},searchText=${param.searchText})}">이전</a></li>
                     <li th:each="i : ${#numbers.sequence(start,end)}"  th:class="${i == board.number + 1} ? 'page-item active' : 'page-item'">
-                        <a class="page-link" th:href="@{/(page=${i-1})}" th:text="${i}"></a></li>
-                    <li class="page-item"  th:if="${end < board.totalPages}"><a class="page-link" th:href="@{/(page=${board.number + 1})}">Next</a></li>
+                        <a class="page-link" th:href="@{/(page=${i-1},searchText=${param.searchText})}" th:text="${i}"></a></li>
+                    <li class="page-item"  th:if="${end < board.totalPages}"><a class="page-link" th:href="@{/(page=${board.number + 1},searchText=${param.searchText})}">다음</a></li>
 
 
                 </ul>
