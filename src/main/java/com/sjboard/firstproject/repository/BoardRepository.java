@@ -1,13 +1,23 @@
 package com.sjboard.firstproject.repository;
 
+import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.sjboard.firstproject.domain.Board;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
+import org.springframework.stereotype.Repository;
 
-public interface BoardRepository extends JpaRepository<Board, Long> {
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+
+
+public interface BoardRepository extends JpaRepository<Board, Long>, QuerydslPredicateExecutor<Board> {
 
 
     @Modifying
@@ -19,5 +29,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     int minusView(Long id);
 
     Page<Board> findByTitleContainingOrContentContaining(String title, String content, Pageable pageable);
+
+
 
 }

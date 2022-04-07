@@ -1,13 +1,13 @@
 package com.sjboard.firstproject.service;
 
 
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.sjboard.firstproject.domain.Board;
 import com.sjboard.firstproject.domain.Comment;
 import com.sjboard.firstproject.domain.Member;
-import com.sjboard.firstproject.dto.BoardResponseDto;
-import com.sjboard.firstproject.dto.BoardSaveDto;
-import com.sjboard.firstproject.dto.BoardUpdateDto;
-import com.sjboard.firstproject.dto.CommentSaveDto;
+import com.sjboard.firstproject.domain.QBoard;
+import com.sjboard.firstproject.dto.*;
 import com.sjboard.firstproject.repository.BoardRepository;
 import com.sjboard.firstproject.repository.CommentRepository;
 import com.sjboard.firstproject.repository.MemberRepository;
@@ -67,9 +67,12 @@ public class BoardService {
         }
     }
 
-    public Page<Board> findByTitleContainingOrContentContaining(String title, String content,Pageable pageable){
-        Page<Board> byTitleContainingOrContentContaining = boardRepository.findByTitleContainingOrContentContaining(title, content, pageable);
-        return byTitleContainingOrContentContaining;
+    public Page<Board> findByTitleContainingOrContentContaining(BoardSearchRequestDTO boardSearchRequestDTO,Pageable pageable){
+
+        BooleanBuilder booleanBuilder = getSearch(boardSearchRequestDTO);
+//        Page<Board> byTitleContainingOrContentContaining = boardRepository.findByTitleContainingOrContentContaining(title, content, pageable);
+        Page<Board> result = boardRepository.findAll(booleanBuilder,pageable);
+        return result;
     }
 
     //게시글 삭제
@@ -116,6 +119,43 @@ public class BoardService {
 
 
         return commentRepository.save(childComment).getId();
+
+    }
+
+    private BooleanBuilder getSearch(BoardSearchRequestDTO boardSearchRequestDTO){
+        String type = boardSearchRequestDTO.getType();
+
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
+
+        String keyword = boardSearchRequestDTO.getKeyword();
+
+        QBoard qboard = QBoard.board;
+        if(type==null ||type.trim().length()==0){
+            return booleanBuilder;
+        }
+
+        BooleanBuilder conditionBuilder = new BooleanBuilder();
+
+        if(type.contains("TC")){
+            conditionBuilder.or(qboard.title.contains(keyword)).or(qboard.content.contains(keyword));
+        }
+
+        if(type.contains("T")){
+            conditionBuilder.or(qboard.title.contains(keyword));
+        }
+
+        if(type.contains("C")){
+            conditionBuilder.or(qboard.content.contains(keyword));
+        }
+
+        if(type.contains("A")){
+            conditionBuilder.or(qboard.author.contains(keyword));
+        }
+
+
+        booleanBuilder.and(conditionBuilder);
+
+        return booleanBuilder;
 
     }
 

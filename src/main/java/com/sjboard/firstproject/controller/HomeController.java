@@ -3,6 +3,7 @@ package com.sjboard.firstproject.controller;
 import com.sjboard.firstproject.domain.Board;
 import com.sjboard.firstproject.domain.Member;
 import com.sjboard.firstproject.dto.BoardResponseDto;
+import com.sjboard.firstproject.dto.BoardSearchRequestDTO;
 import com.sjboard.firstproject.dto.MemberJoinDto;
 import com.sjboard.firstproject.repository.BoardRepository;
 import com.sjboard.firstproject.service.BoardService;
@@ -31,10 +32,13 @@ public class HomeController {
     private final BoardService boardService;
 
     @GetMapping(value = {"/","/board"})
-    public String Home(Model model,@PageableDefault(page = 0, size=5, sort="createdDate", direction = Sort.Direction.DESC) Pageable pageable, @RequestParam(required = false, defaultValue = "")String searchText) {
+//    @RequestParam(required = false, defaultValue = "")String searchText
+    public String Home(Model model, @PageableDefault(page = 0, size=5, sort="createdDate", direction = Sort.Direction.DESC) Pageable pageable, BoardSearchRequestDTO boardSearchRequestDTO) {
 //        Page<Board> board = boardService.findAllDesc(pageable);
-        Page<Board> board = boardService.findByTitleContainingOrContentContaining(searchText,searchText,pageable);
+        log.info("getType={}",boardSearchRequestDTO.getType());
+        Page<Board> board = boardService.findByTitleContainingOrContentContaining(boardSearchRequestDTO,pageable);
         model.addAttribute("board", board);
+//        model.addAttribute("boardSearchRequestDTO", BoardSearchRequestDTO.builder().build());
 
 
         return "home";

@@ -1,7 +1,15 @@
+buildscript {
+	dependencies {
+		classpath("gradle.plugin.com.ewerk.gradle.plugins:querydsl-plugin:1.0.10")
+	}
+}
+
 plugins {
 	id 'org.springframework.boot' version '2.6.4'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 	id 'java'
+
 }
 
 group = 'com.sjboard'
@@ -14,6 +22,8 @@ configurations {
 	}
 }
 
+apply plugin: "com.ewerk.gradle.plugins.querydsl"
+
 repositories {
 	mavenCentral()
 }
@@ -24,6 +34,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	runtimeOnly 'org.springframework.boot:spring-boot-devtools'
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
     implementation 'junit:junit:4.13.1'
 	implementation 'junit:junit:4.13.1'
@@ -32,8 +43,44 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+	implementation 'com.querydsl:querydsl-jpa'
+	implementation 'com.querydsl:querydsl-apt'
+
 }
+
+
 
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+def querydslDir = "$buildDir/generated/querydsl"
+
+querydsl {
+	library = "com.querydsl:querydsl-apt"
+	jpa = true
+	querydslSourcesDir = querydslDir
+}
+
+sourceSets {
+	main {
+		java {
+			srcDirs = ['src/main/java', querydslDir]
+		}
+	}
+}
+
+compileQuerydsl{
+	options.annotationProcessorPath = configurations.querydsl
+}
+
+configurations {
+	querydsl.extendsFrom compileClasspath
+}
+
+/* comileQuerydsl.doFirst 추가: 재컴파일 시 q파일을 모두 지우도록 */
+//compileQuerydsl.doFirst {
+//	if(file(querydslDir).exists())
+//		delete(file(querydslDir))
+//}
+//querydsl 추가 끝
