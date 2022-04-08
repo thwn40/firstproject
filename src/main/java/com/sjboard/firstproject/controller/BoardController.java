@@ -8,14 +8,19 @@ import com.sjboard.firstproject.service.BoardService;
 import com.sjboard.firstproject.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -36,8 +41,10 @@ public class BoardController {
 
     //게시글 작성
 
+
     @PostMapping("/board/write")
-    public String boardWrite(@Valid BoardSaveDto boardSaveDto, @AuthenticationPrincipal MemberDetails principal, BindingResult bindingResult) {
+    public String boardWrite( @Valid BoardSaveDto boardSaveDto, @AuthenticationPrincipal MemberDetails principal, BindingResult bindingResult) throws IOException {
+
         System.out.println("boardSaveDto.getContent() = " + boardSaveDto.getContent());
 
         System.out.println("boardSaveDto.getTitle() = " + boardSaveDto.getTitle());

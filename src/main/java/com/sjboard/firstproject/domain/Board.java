@@ -38,6 +38,7 @@ public class Board extends BaseTimeEntity{
     private int view;
 
 
+
     @OneToMany(mappedBy = "board", fetch =FetchType.EAGER, cascade = CascadeType.REMOVE)
     List<Comment> comments = new ArrayList<>();
 

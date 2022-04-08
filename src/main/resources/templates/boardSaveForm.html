@@ -1,10 +1,15 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/header :: header" />
+
+
+<head th:replace="fragments/header :: header"/>
 <body>
+<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+
+
 <div class="container">
   <div th:replace="fragments/bodyHeader :: bodyHeader" />
-<form action ="/board/write" th:object="${boardSaveDto}" method = "post">
+<form action ="/board/write" th:object="${boardSaveDto}" method = "post" id="boardSaveForm">
   <input type="hidden" id="member" name = "member" th:value="${#authentication.principal.member}"/>
 
   <div class="my-3">
@@ -13,15 +18,56 @@
   </div>
   <div class="mb-3">
     <label th:for="content" class="form-label">내용</label>
-    <textarea class="form-control"name="content" th:field="*{content}" id ="content" rows="8"></textarea>
+    <textarea class="form-control"name="content" th:field="*{content}" id ="content" rows="8" hidden></textarea>
+    <label for="editor"></label>
+    <div style="background: white" id="editor"></div>
   </div>
 
-  <div class="text-end"><button  class="btn btn-primary"  id="btn-save" type="submit">제출</button></div>
+
+
+
+  <div class="text-end"><button  class="btn btn-primary"  onclick="post()">제출</button></div>
 
 
 </form>
   <div th:replace="fragments/footer :: footer" />
 </div>
+<script>
+ const Editor = toastui.Editor;
+ const editor = new Editor({
+  el: document.querySelector('#editor'),
+  height: '600px',
+  initialEditType: 'markdown',
+  previewStyle: 'vertical'
+});
+</script>
+<script>
+  function post() {
+  const contents = document.getElementById("content");
+        contents.value = editor.getMarkdown();
+
+<!--        if (!checkTitle()) {-->
+<!--            alert("제목을 입력해주세요")-->
+<!--            return;-->
+<!--        }-->
+<!--        else if (!checkContent()) {-->
+<!--            alert("내용은 1~ 65535자 이하여야합니다.")-->
+<!--            return;-->
+<!--        }else if (!checkCategory()) {-->
+<!--            alert("카테고리를 입력해주세요")-->
+<!--            return;-->
+<!--        }else if (!checkTags()) {-->
+<!--            alert("태그를 입력해주세요")-->
+<!--            return;-->
+<!--        }-->
+
+        document.getElementById("writeArticleForm").submit();
+    }
+
+
+</script>
+
+</script>
 <script src="/docs/5.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
 
