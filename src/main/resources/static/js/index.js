@@ -25,6 +25,9 @@ var main = {
     $('#btn-comment-update').on('click', function() {
         _this.commentUpdate();
     });
+    $('#btn-like-up').on('click', function() {
+            _this.LikeUp();
+    });
 
     },
        save : function () {
@@ -149,6 +152,23 @@ commentUpdate:function(){
     alert(JSON.stringify(error));
     }); //ajax 통신을 이용해서 3개의 데이터를 json으로 변경하여 insert 요청을 한다
 },
+   LikeUp : function (memberId,boardId) {
+                var data = {
+                  memberId,boardId
+                };
+
+                $.ajax({
+                    type: 'POST',
+                     url: "/board/"+boardId+"/like",
+                    dataType: 'json',
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify(data)
+                }).done(function(){//글 등록이 성공하면 메인페이지(/)로 이동
+                    location.href = "/board/"+boardId;
+                }).fail(function (error){
+                    alert(JSON.stringify(error));
+                });
+            },
 
 commentDelete:function(commentId,boardId){
 

@@ -71,9 +71,10 @@ public class BoardController {
         }
         else{
             log.info("로그인이 되있음");
-            String name = principal.getMember().getName();
-            model.addAttribute("name",name);
+            Member member = principal.getMember();
+            model.addAttribute("member",member);
         }
+        log.info("좋아요 수={}",board.getLikeCount());
 
 
         model.addAttribute("comments", comments);

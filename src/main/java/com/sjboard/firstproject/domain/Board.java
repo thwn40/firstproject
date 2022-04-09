@@ -37,6 +37,8 @@ public class Board extends BaseTimeEntity{
     @Column(columnDefinition = "integer default 0", nullable = false)
     private int view;
 
+    @OneToMany(mappedBy = "board")
+    List<Likes> likeCount = new ArrayList<>();
 
 
     @OneToMany(mappedBy = "board", fetch =FetchType.EAGER, cascade = CascadeType.REMOVE)
@@ -52,9 +54,14 @@ public class Board extends BaseTimeEntity{
         this.member = member;
     }
 
+
     public void update(String title, String content){
         this.title = title;
         this.content = content;
+    }
+
+    public void LikesCountUp(Likes like){
+        likeCount.add(like);
     }
 
 

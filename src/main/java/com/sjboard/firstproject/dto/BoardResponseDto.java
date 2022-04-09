@@ -14,6 +14,7 @@ private String title;
 private String content;
 private String author;
 private int view;
+private int likeCount;
 private LocalDateTime modifiedDate;
 
 
@@ -23,6 +24,7 @@ private LocalDateTime modifiedDate;
         this.view = entity.getView();
         this.content = entity.getContent();
         this.author = entity.getAuthor();
+        this.likeCount= entity.getLikeCount().size();
         this.modifiedDate = entity.getModifiedDate();
     }
 }

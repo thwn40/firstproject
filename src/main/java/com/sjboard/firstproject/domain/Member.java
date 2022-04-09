@@ -31,6 +31,10 @@ public class Member extends BaseTimeEntity{
 
     private String role;
 
+    @OneToMany(mappedBy = "member")
+    private List<Likes> likeList = new ArrayList<>();
+
+
 
     @OneToMany(mappedBy = "member",  cascade = CascadeType.REMOVE)
     private List<Board> boardList = new ArrayList<>();

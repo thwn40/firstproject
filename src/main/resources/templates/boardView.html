@@ -4,7 +4,7 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="fragments/header :: header" />
 <body>
-<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+
 <!--내용 부분-->
 <div class="container">
     <div th:replace="fragments/bodyHeader :: bodyHeader" />
@@ -13,14 +13,22 @@
             <input type="text" name="title" id="title" th:value="${board.title}" readonly class="form-control">
         </div>
         <div class="mb-3">
-            <label for="viewer"></label>
-            <div style="background: white" id="viewer" th:utext="${board.getContent()}"></div>
-<!--            <label for="content" class="form-label">내용</label>-->
+            <textarea th:text="${board.getContent()}" name="content" id="content" hidden></textarea>
+            <label for="content" class="form-label">내용</label>
+            <div id="viewer"></div>
+
 
 <!--&lt;!&ndash;            <div class="toastui-editor-contents" th:utext="${board.getContent()}"></div>&ndash;&gt;-->
 <!--            <div class="toastui-editor-contents" name="content" id ="content"  rows="8" readonly th:utext="${board.getContent()}"></div>-->
-
+            <div class = "text-center">
+                <button type="button" class="btn btn-primary"  th:onclick="main.LikeUp([[${member.id}]],[[${board.id}]])">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-hand-thumbs-up-fill" viewBox="0 0 16 16">
+                        <path d="M6.956 1.745C7.021.81 7.908.087 8.864.325l.261.066c.463.116.874.456 1.012.965.22.816.533 2.511.062 4.51a9.84 9.84 0 0 1 .443-.051c.713-.065 1.669-.072 2.516.21.518.173.994.681 1.2 1.273.184.532.16 1.162-.234 1.733.058.119.103.242.138.363.077.27.113.567.113.856 0 .289-.036.586-.113.856-.039.135-.09.273-.16.404.169.387.107.819-.003 1.148a3.163 3.163 0 0 1-.488.901c.054.152.076.312.076.465 0 .305-.089.625-.253.912C13.1 15.522 12.437 16 11.5 16H8c-.605 0-1.07-.081-1.466-.218a4.82 4.82 0 0 1-.97-.484l-.048-.03c-.504-.307-.999-.609-2.068-.722C2.682 14.464 2 13.846 2 13V9c0-.85.685-1.432 1.357-1.615.849-.232 1.574-.787 2.132-1.41.56-.627.914-1.28 1.039-1.639.199-.575.356-1.539.428-2.59z"/>
+                    </svg>
+                    <a th:text="좋아요+${board.LikeCount}"></a>
+                </button>
         </div>
+</div>
 <!--내용 부분-->
 
 
@@ -50,7 +58,7 @@
 
             </li>
             <div sec:authorize="isAuthenticated()" class ="ms-2" th:if="${comment.parent}==null">
-                <button   th:if = "(${comment.member.name}==${name})" type="button" th:onclick="main.commentDelete([[${comment.id}]],[[${board.id}]])"
+                <button   th:if = "(${comment.member.name}==${member.name})" type="button" th:onclick="main.commentDelete([[${comment.id}]],[[${board.id}]])"
                         class="btn btn-primary btn-sm float-right">삭제</button>
                 <button class="btn btn-warning btn-sm float-right" data-toggle="collapse"
                         th:data-target="${'#comment-reply-'+comment.id}" aria-expanded="false">답글
@@ -58,7 +66,7 @@
 
             </div>
             <div class ="ms-5" th:unless="${comment.parent}==null">
-                <button   th:if = "(${comment.member.name}==${name})" type="button" th:onclick="main.commentDelete([[${comment.id}]],[[${board.id}]])"
+                <button   th:if = "(${comment.member.name}==${member.name})" type="button" th:onclick="main.commentDelete([[${comment.id}]],[[${board.id}]])"
                         class="btn btn-primary btn-sm float-right">삭제</button>
                 <button class="btn btn-warning btn-sm float-right" data-toggle="collapse"
                         th:data-target="${'#comment-reply-'+comment.id}" aria-expanded="false">답글
@@ -107,14 +115,14 @@
 <!--                <button class="btn btn-warning btn-sm" data-toggle="collapse"-->
 <!--                        th:data-target="${'#comment-reply-'+comment.id}" aria-expanded="false">답글-->
 <!--                </button>-->
-                <button  th:if = "(${comment.member.name}==${name})" type="button" th:onclick="main.commentDelete([[${comment.id}]],[[${board.id}]])"
+                <button  th:if = "(${comment.member.name}==${member.name})" type="button" th:onclick="main.commentDelete([[${comment.id}]],[[${board.id}]])"
                         class="btn btn-primary btn-sm float-right">삭제</button>
             </div>
             <div class ="ms-5" th:unless="${comment.parent}==null">
 <!--                <button class="btn btn-warning btn-sm" data-toggle="collapse"-->
 <!--                        th:data-target="${'#comment-reply-'+comment.id}" aria-expanded="false">답글-->
 <!--                </button>-->
-                <button  th:if = "(${comment.member.name}==${name})" type="button" th:onclick="main.commentDelete([[${comment.id}]],[[${board.id}]])"
+                <button  th:if = "(${comment.member.name}==${member.name})" type="button" th:onclick="main.commentDelete([[${comment.id}]],[[${board.id}]])"
                         class="btn btn-primary btn-sm float-right">삭제</button>
             </div>
             <!--답글 입력하는 부분-->
@@ -172,24 +180,26 @@
 <div class ="my-1">
     <form id="blogForm" method="POST">
         <button type="button" class="btn btn-success " onclick="location.href='home.html" th:onclick="|location.href='@{/board}'|">뒤로가기</button>
-        <button th:if = "(${board.author}==${name})" type="button" class="btn btn-primary " th:onclick="|location.href='@{/board/{Id}/update(Id=${board.id})}'|">수정</button>
+        <button th:if = "(${board.author}==${member.name})" type="button" class="btn btn-primary " th:onclick="|location.href='@{/board/{Id}/update(Id=${board.id})}'|">수정</button>
         <input type="hidden" name="_method" value="DELETE"/>
-        <button th:if = "(${board.author}==${name})" class="btn btn-warning " th:onlick="|location.href='@{/board/{Id}/(Id=${board.id})}'|">삭제</button>
+        <button th:if = "(${board.author}==${member.name})" class="btn btn-warning " th:onlick="|location.href='@{/board/{Id}/(Id=${board.id})}'|">삭제</button>
     </form>
 </div>
     <div th:replace="fragments/footer :: footer" />
 </div>
-
-
+<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 <script src="/docs/5.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 <script>
- const Editor = toastui.Editor;
-   const viewer = toastui.Editor.factory({
-            el: document.querySelector('#viewer'),
-            viewer: true,
-            height: '500px',
-            initialValue: content
-        });
+const viewer = toastui.Editor.factory({
+    el: document.querySelector('#viewer'),
+    viewer: true,
+    height: '600px',
+    initialValue: ''
+});
+
+const contents = document.getElementById("content");
+
+viewer.setMarkdown(content.value);
 </script>
 <script src="/js/index.js"></script>
 </body>
