@@ -1,0 +1,30 @@
+
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header" />
+<link rel="stylesheet" th:href="@{/css/error.css}"/>
+<body>
+
+<div class = "container">
+    <div class="container w-50 justify-content-center align-items-center">
+
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+        <div class="error-header"> </div>
+        <div class="container ">
+            <section class="error-container text-center">
+                <h1>500</h1>
+                <div class="error-divider">
+                    <h2>뭔가 잘못됐습니다.</h2>
+
+                </div>
+                <button class="btn btn-primary" th:onclick="|location.href='@{/board}'|" type="button"><i class="fa fa-home"></i>처음으로</button>
+            </section>
+        </div>
+    </div>
+    <div th:replace="fragments/footer :: footer" />
+</div>
+
+</div>
+
+</body>
+</html>

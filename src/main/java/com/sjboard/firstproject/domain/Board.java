@@ -37,7 +37,7 @@ public class Board extends BaseTimeEntity{
     @Column(columnDefinition = "integer default 0", nullable = false)
     private int view;
 
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
     List<Likes> likeCount = new ArrayList<>();
 
 

@@ -7,18 +7,18 @@
 <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 
 
-<div class="container">
+<div class="container mt-4">
   <div th:replace="fragments/bodyHeader :: bodyHeader" />
-<form action ="/board/write" th:object="${boardSaveDto}" method = "post" id="boardSaveForm">
+<form action ="/board/write"  method = "post" th:object="${boardSaveDto}" id="boardSaveForm">
   <input type="hidden" id="member" name = "member" th:value="${#authentication.principal.member}"/>
 
   <div class="my-3">
     <label th:for="title" class="form-label">제목</label>
-    <input class="form-control" th:field="*{title}" name="title" id="title" >
+    <input class="form-control"  th:field="*{title}"  name="title" id="title" >
   </div>
   <div class="mb-3">
     <label th:for="content" class="form-label">내용</label>
-    <textarea class="form-control"name="content" th:field="*{content}" id ="content" rows="8" hidden></textarea>
+    <textarea class="form-control"  th:field="*{content}" name="content" id ="content" rows="8" hidden></textarea>
     <label for="editor"></label>
     <div style="background: white" id="editor"></div>
   </div>
@@ -43,27 +43,26 @@
 </script>
 <script>
   function post() {
-  const contents = document.getElementById("content");
+    const contents = document.getElementById("content");
         contents.value = editor.getMarkdown();
 
-<!--        if (!checkTitle()) {-->
-<!--            alert("제목을 입력해주세요")-->
-<!--            return;-->
-<!--        }-->
-<!--        else if (!checkContent()) {-->
-<!--            alert("내용은 1~ 65535자 이하여야합니다.")-->
-<!--            return;-->
-<!--        }else if (!checkCategory()) {-->
-<!--            alert("카테고리를 입력해주세요")-->
-<!--            return;-->
-<!--        }else if (!checkTags()) {-->
-<!--            alert("태그를 입력해주세요")-->
-<!--            return;-->
-<!--        }-->
+         if (document.getElementById("title").value === " " || document.getElementById("title").value === "") {
+            alert("제목을 입력해주세요")
+            return false;
+        }
+        else if (document.getElementById("content").value === " " || document.getElementById("content").value === "") {
+            alert("내용을 입력해주세요")
+            return false;
+            }
 
-        document.getElementById("writeArticleForm").submit();
+         document.getElementById("boardSaveForm").submit();
+
+
+
     }
+      editor.setMarkdown([[${boardSaveDto.getContent()}]]);
 
+</script>
 
 </script>
 

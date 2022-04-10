@@ -102,6 +102,10 @@ childCommentSave:function(parentId, boardId,content){
     var data={
     content : document.getElementById("child-content"+parentId).value
     };
+    if(data['content'] === ""|| data['content'] ===" "){
+                alert("댓글을 작성해주세요");
+                return;
+                }
 
 
     console.log(data['content']);
@@ -152,9 +156,9 @@ commentUpdate:function(){
     alert(JSON.stringify(error));
     }); //ajax 통신을 이용해서 3개의 데이터를 json으로 변경하여 insert 요청을 한다
 },
-   LikeUp : function (memberId,boardId) {
+   LikeUp : function (boardId,memberId) {
                 var data = {
-                  memberId,boardId
+                 boardId,memberId
                 };
 
                 $.ajax({
@@ -163,7 +167,7 @@ commentUpdate:function(){
                     dataType: 'json',
                     contentType: 'application/json; charset=utf-8',
                     data: JSON.stringify(data)
-                }).done(function(){//글 등록이 성공하면 메인페이지(/)로 이동
+                }).done(function(){
                     location.href = "/board/"+boardId;
                 }).fail(function (error){
                     alert(JSON.stringify(error));

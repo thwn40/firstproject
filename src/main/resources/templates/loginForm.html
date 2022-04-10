@@ -3,9 +3,12 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header :: header" />
 <body class="text-center">
-<div th:replace="fragments/bodyHeader :: bodyHeader" />
 
+
+<div class ="container mt-4">
+<div th:replace="fragments/bodyHeader :: bodyHeader" />
 <div class="container w-50 justify-content-center align-items-center">
+
   <form action="/login" method="post">
 
     <h1 class="h3 my-5 fw-normal">로그인하세요</h1>
@@ -26,12 +29,10 @@
     </div>
     <button class="btn btn-lg btn-primary" type="submit">로그인</button>
     <button class="btn btn-lg btn-primary" th:onclick="|location.href='@{/joinForm}'|" type="button">회원가입</button>
-    <p class="mt-5 mb-3 text-muted">&copy; 2017–2022</p>
   </form>
   <div th:replace="fragments/footer :: footer" />
 </div>
-
-
+</div>
 
 </body>
 </html>

@@ -23,13 +23,11 @@ public class Likes{
     @JoinColumn(name = "board_id")
     private Board board;
 
-    private boolean checked;
 
     @Builder
     public Likes(Member member, Board board) {
         this.member = member;
         this.board = board;
-        this.checked=true;
     }
 
 }

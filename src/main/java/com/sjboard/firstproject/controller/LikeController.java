@@ -29,7 +29,7 @@ public class LikeController {
 
     @ResponseBody
     @PostMapping("/board/{id}/like")
-    public Long 좋아요증가(@PathVariable Long id, Model model, @AuthenticationPrincipal MemberDetails principal) {
+    public Long likeUp(@PathVariable Long id, Model model, @AuthenticationPrincipal MemberDetails principal) {
         Member member = principal.getMember();
 
         return likesService.likeUp(id,member.getId());

@@ -43,7 +43,7 @@ public class BoardService {
 
         Optional<Board> byId = boardRepository.findById(id);
         if (byId.isEmpty()) {
-            throw new IllegalStateException("게시글이 없습니다");
+            throw new IllegalStateException("해당 게시글이 없습니다");
         } else {
             byId.get().update(boardUpdateDto.getTitle(), boardUpdateDto.getContent());
             return id;
@@ -61,7 +61,7 @@ public class BoardService {
         Optional<Board> byId = boardRepository.findById(id);
 
         if (byId.isEmpty()) {
-            throw new IllegalStateException("게시글이 없습니다");
+            throw new IllegalStateException("해당 게시글이 없습니다");
         } else {
             return new BoardResponseDto(byId.get());
         }
@@ -81,7 +81,7 @@ public class BoardService {
         Optional<Board> byId = boardRepository.findById(id);
 
         if (byId.isEmpty()) {
-            throw new IllegalStateException("게시글이 없습니다");
+            throw new IllegalStateException("해당 게시글이 없습니다");
         } else {
             boardRepository.delete(byId.get());
         }

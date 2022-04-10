@@ -43,13 +43,13 @@ public class BoardController {
 
 
     @PostMapping("/board/write")
-    public String boardWrite( @Valid BoardSaveDto boardSaveDto, @AuthenticationPrincipal MemberDetails principal, BindingResult bindingResult) throws IOException {
+    public String boardWrite(@AuthenticationPrincipal MemberDetails principal, @Valid BoardSaveDto boardSaveDto, BindingResult bindingResult,   Model model) throws IOException {
 
-        System.out.println("boardSaveDto.getContent() = " + boardSaveDto.getContent());
-
-        System.out.println("boardSaveDto.getTitle() = " + boardSaveDto.getTitle());
+//        System.out.println("boardSaveDto.getContent() = " + boardSaveDto.getContent());
+//
+//        System.out.println("boardSaveDto.getTitle() = " + boardSaveDto.getTitle());
         if (bindingResult.hasErrors()) {
-            return "redirect:/";
+            return "boardSaveForm";
         }
         System.out.println("principal = " + principal.getMember().getName());
         boardService.save(boardSaveDto, principal.getMember());
