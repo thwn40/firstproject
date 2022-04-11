@@ -4,14 +4,17 @@ import com.sjboard.firstproject.domain.Member;
 import com.sjboard.firstproject.dto.MemberJoinDto;
 import com.sjboard.firstproject.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class MemberService {
 
 
@@ -57,7 +60,19 @@ public class MemberService {
     }
 
 
+    public int NameCheck(String name) {
+        Optional<Member> byName = memberRepository.findByName(name);
 
+        if (byName.isEmpty()) {
+
+            return 0;
+        }
+        else{
+            log.info("가져온 멤버 = {}",byName.get());
+            return 1;
+        }
+
+    }
 
 
 }

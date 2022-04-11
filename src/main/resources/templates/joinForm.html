@@ -1,6 +1,10 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header :: header" />
+<style>
+    .id_ok{color:#0000FF; display: none;}
+.id_already{color:#CD1039; display: none;}
+</style>
 <body>
 <div class = "container  mt-4">
     <div th:replace="fragments/bodyHeader :: bodyHeader" />
@@ -12,7 +16,9 @@
         <div class="form-group">
             <label th:for="name">성명</label>
             <input type="text" th:field="*{name}" class="form-control" placeholder="이름을 입력하세요"
-                   th:errorclass="field-error">
+                   th:errorclass="field-error" oninput = "checkName()">
+            <span class="id_ok">사용 가능한 이름입니다.</span>
+            <span class="id_already">누군가 이 이름를 사용하고 있어요.</span>
             <p th:if="${#fields.hasErrors('name')}"
                th:errors="*{name}">Incorrect data</p></div>
         <div class="form-group">
@@ -45,7 +51,7 @@
         <!--            </div>-->
 
         <div class="form-group text-center my-3">
-            <button type="submit" id="btn-join" class="btn btn-primary">
+            <button type="submit" id="btn-join" class="btn btn-primary" disabled>
                 회원가입<i class="fa fa-check spaceLeft"></i>
             </button>
             <!--                <button type="submit" class="btn btn-warning">-->
@@ -58,5 +64,28 @@
 </div>
 </div>
 <script src="/js/index.js"></script>
+<script type="text/javascript">
+        function checkName(){
+            var name = $('#name').val();
+        $.ajax({
+            url:'/join/nameCheck',
+            type:'post',
+            data:{name:name},
+            success:function(cnt){ //컨트롤러에서 넘어온 cnt값을 받는다
+                if(cnt != 1){ //cnt가 1이 아니면(=0일 경우) -> 사용 가능한 아이디
+                    $('.id_ok').css("display","inline-block");
+                    $('.id_already').css("display", "none");
+                    $('#btn-join').removeAttr('disabled');
+                } else { // cnt가 1일 경우 -> 이미 존재하는 아이디
+                    $('.id_already').css("display","inline-block");
+                    $('.id_ok').css("display", "none");
+                }
+            },
+            error:function(){
+                alert("에러입니다");
+            }
+        });
+        };
+    </script>
 </body>
 </html>
