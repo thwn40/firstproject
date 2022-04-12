@@ -1,5 +1,6 @@
 package com.sjboard.firstproject.controller;
 
+
 import com.sjboard.firstproject.auth.MemberDetails;
 import com.sjboard.firstproject.domain.Comment;
 import com.sjboard.firstproject.domain.Member;
@@ -8,18 +9,13 @@ import com.sjboard.firstproject.service.BoardService;
 import com.sjboard.firstproject.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -43,7 +39,7 @@ public class BoardController {
 
 
     @PostMapping("/board/write")
-    public String boardWrite(@AuthenticationPrincipal MemberDetails principal, @Valid BoardSaveDto boardSaveDto, BindingResult bindingResult,   Model model) throws IOException {
+    public String boardWrite(@AuthenticationPrincipal MemberDetails principal, @Valid BoardSaveDto boardSaveDto, BindingResult bindingResult, Model model) throws IOException {
 
 //        System.out.println("boardSaveDto.getContent() = " + boardSaveDto.getContent());
 //

@@ -8,6 +8,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 //시큐리티 설정에서 loginProcessingUrl("/login");
 // /login 오청이 오면 자동으로 UserDetailsService 타입으로 ioc되어 있는 loadUserByUsername 함수가 실행
 @Service
@@ -21,10 +23,10 @@ public class MemberDetailsService implements UserDetailsService {
     // 시큐리티 session = (내부 Authentication(내부 UserDetails))
     @Override
     public UserDetails loadUserByUsername(String loginId) throws UsernameNotFoundException {
-        Member member = memberRepository.findByLoginId(loginId);
-        if(member!= null){
-            return new MemberDetails(member);
+        Optional<Member> member = memberRepository.findByLoginId(loginId);
+        if(member.isPresent()){
+            return new MemberDetails(member.get());
         }
-        return null;
+        throw new UsernameNotFoundException(loginId);
     }
 }

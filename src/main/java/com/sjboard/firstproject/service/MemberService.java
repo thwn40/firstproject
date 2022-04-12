@@ -21,15 +21,19 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+
+
+    //회원가입
+
     @Transactional
     public Long Join(MemberJoinDto memberJoinDto){
-        Member byLoginId = memberRepository.findByLoginId(memberJoinDto.getLoginId());
-        if(byLoginId==null){
-            String rawPassword = memberJoinDto.getPassword();
+        Optional<Member> byLoginId = memberRepository.findByLoginId(memberJoinDto.getLoginId());
+        if(byLoginId.isEmpty()){
+            memberJoinDto.setPassword(bCryptPasswordEncoder.encode(memberJoinDto.getPassword()));
             return  memberRepository.save(Member.builder()
                     .name(memberJoinDto.getName())
                     .loginId(memberJoinDto.getLoginId())
-                    .password(bCryptPasswordEncoder.encode(rawPassword))
+                    .password(memberJoinDto.getPassword())
                     .role("ROLE_USER")
                     .build()).getId();
         }
@@ -39,17 +43,6 @@ public class MemberService {
     }
 
 
-    @Transactional
-    public Member Login(String loginId, String password){
-        Member member = memberRepository.findByLoginId(loginId);
-
-        if(member.getPassword().equals(password)){
-            return member;
-        }
-
-        throw new IllegalStateException("아이디나 비밀번호가 틀립니다");
-
-    }
 
     public List<Member> findMembers(){
         return memberRepository.findAll();
@@ -61,6 +54,10 @@ public class MemberService {
 
 
     public int NameCheck(String name) {
+        if(name.length()==0){
+            return 2;
+        }
+
         Optional<Member> byName = memberRepository.findByName(name);
 
         if (byName.isEmpty()) {
@@ -72,7 +69,25 @@ public class MemberService {
             return 1;
         }
 
+
     }
 
 
-}
+    public int loginIdCheck(String loginId) {
+        if(loginId.length()==0){
+            return 2;
+        }
+        Optional<Member> byLoginId = memberRepository.findByLoginId(loginId);
+
+        if (byLoginId.isEmpty()) {
+
+            return 0;
+        } else {
+            log.info("가져온 멤버 = {}", byLoginId.get());
+            return 1;
+        }
+
+
+    }
+
+    }

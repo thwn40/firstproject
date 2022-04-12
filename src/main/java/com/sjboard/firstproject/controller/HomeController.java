@@ -56,35 +56,5 @@ public class HomeController {
     public @ResponseBody String manager(){
         return "manager";
     }
-    @GetMapping("/loginForm")
-    public String loginForm(){
-        return "loginForm";
-    }
-    @GetMapping("/joinForm")
-    public String joinForm(Model model){
-        model.addAttribute("memberJoinDto",new MemberJoinDto());
-        return "joinForm";
-    }
-
-    @PostMapping("/join")
-    public String join(@Valid  MemberJoinDto memberJoinDto, BindingResult bindingResult){
-
-        if (bindingResult.hasErrors()) {
-            log.info("errors={}", bindingResult);
-            return "joinForm";
-        }
-
-
-        memberService.Join(memberJoinDto);
-        return "loginForm";
-
-
-    }
-
-    @GetMapping("/joinProc")
-    public @ResponseBody String joinProc(){
-        return "회원가입 완료";
-    }
-
 
 }

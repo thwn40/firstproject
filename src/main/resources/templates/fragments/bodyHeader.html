@@ -11,7 +11,7 @@
 
 
       <div class="text-end">
-        <button type="button" class="btn btn-outline-primary me-2"sec:authorize="isAnonymous()"  th:onclick="|location.href='@{/loginForm}'|" id="login">로그인</button>
+        <button type="button" class="btn btn-outline-primary me-2"sec:authorize="isAnonymous()"  th:onclick="|location.href='@{/login}'|" id="login">로그인</button>
         <button type="button" class="btn btn-primary" sec:authorize="isAuthenticated()"  th:onclick="|location.href='@{/logout}'|" id="logout">로그아웃</button>
 <!--        <button type="button" class="btn btn-outline-primary me-2">Login</button>-->
         <button type="button" class="btn btn-primary"  th:onclick="|location.href='@{/joinForm}'|">회원가입</button>

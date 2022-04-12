@@ -1,37 +1,40 @@
-
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/header :: header" />
+<head th:replace="fragments/header :: header"/>
 <body class="text-center">
 
 
-<div class ="container mt-4">
-<div th:replace="fragments/bodyHeader :: bodyHeader" />
-<div class="container w-50 justify-content-center align-items-center">
+<div class="container mt-4">
+    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+    <div class="container w-50 justify-content-center align-items-center">
 
-  <form action="/login" method="post">
+        <form action="/login" method="post">
 
-    <h1 class="h3 my-5 fw-normal">로그인하세요</h1>
+            <h1 class="h3 my-5 fw-normal">로그인하세요</h1>
 
-    <div class="form-floating">
-      <input type="text" class="form-control" id="loginId" name ="loginId" placeholder="Id">
-      <label for="loginId">id</label>
+            <div class="form-floating">
+                <input type="text" class="form-control" id="loginId" name="loginId" placeholder="Id">
+                <label for="loginId">id</label>
+            </div>
+            <div class="form-floating">
+                <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                <label for="password">Password</label>
+            </div>
+
+            <div class="checkbox mb-3">
+                <label>
+                    <input type="checkbox" value="remember-me"> 아이디 저장
+                </label>
+            </div>
+            <div th:if="${param.error}">
+                <p th:text="${exception}" class ="alert alert-danger"></p>
+            </div>
+            <button class="btn btn-lg btn-primary" type="submit">로그인</button>
+            <button class="btn btn-lg btn-primary" th:onclick="|location.href='@{/joinForm}'|" type="button">회원가입
+            </button>
+        </form>
+        <div th:replace="fragments/footer :: footer"/>
     </div>
-    <div class="form-floating">
-      <input type="password" class="form-control" id="password" name ="password" placeholder="Password">
-      <label for="password">Password</label>
-    </div>
-
-    <div class="checkbox mb-3">
-      <label>
-        <input type="checkbox" value="remember-me"> 아이디 저장
-      </label>
-    </div>
-    <button class="btn btn-lg btn-primary" type="submit">로그인</button>
-    <button class="btn btn-lg btn-primary" th:onclick="|location.href='@{/joinForm}'|" type="button">회원가입</button>
-  </form>
-  <div th:replace="fragments/footer :: footer" />
-</div>
 </div>
 
 </body>
