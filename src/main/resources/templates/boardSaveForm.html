@@ -9,7 +9,7 @@
 
 <div class="container mt-4">
   <div th:replace="fragments/bodyHeader :: bodyHeader" />
-<form action ="/board/write"  method = "post" th:object="${boardSaveDto}" id="boardSaveForm">
+<form th:action ="@{/board/write}"  method = "post" th:object="${boardSaveDto}" id="boardSaveForm" enctype="multipart/form-data">
   <input type="hidden" id="member" name = "member" th:value="${#authentication.principal.member}"/>
 
   <div class="my-3">
@@ -38,13 +38,41 @@
   el: document.querySelector('#editor'),
   height: '600px',
   initialEditType: 'markdown',
-  previewStyle: 'vertical'
+  previewStyle: 'vertical',
+  hooks: {
+        addImageBlobHook: (blob, callback) => {
+            let imgurl = uploadImage(blob);
+            callback(imgurl, "첨부 이미지")
+        }
+    }
 });
+
+      editor.setMarkdown([[${boardSaveDto.getContent()}]]);
+
+        function uploadImage(blob) {
+        let formData = new FormData();
+        formData.append('img', blob);
+
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "/board/uploadImage", false);
+        xhr.setRequestHeader("contentType", "multipart/form-data");
+
+        xhr.send(formData);
+
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            return xhr.response;
+        } else {
+            alert("이미지가 정상적으로 업로드되지 못했습니다.");
+        }
+    }
+
+
+
 </script>
 <script>
   function post() {
     const contents = document.getElementById("content");
-        contents.value = editor.getMarkdown();
+
 
          if (document.getElementById("title").value === " " || document.getElementById("title").value === "") {
             alert("제목을 입력해주세요")
@@ -54,13 +82,13 @@
             alert("내용을 입력해주세요")
             return false;
             }
-
+         contents.value = editor.getMarkdown();
          document.getElementById("boardSaveForm").submit();
 
 
 
     }
-      editor.setMarkdown([[${boardSaveDto.getContent()}]]);
+
 
 </script>
 

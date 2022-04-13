@@ -160,7 +160,8 @@ commentUpdate:function(){
                 var data = {
                  boardId,memberId
                 };
-
+   console.log(data['boardId']);
+   console.log(data['memberId']);
                 $.ajax({
                     type: 'POST',
                      url: "/board/"+boardId+"/like",

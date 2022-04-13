@@ -4,18 +4,26 @@ package com.sjboard.firstproject.controller;
 import com.sjboard.firstproject.auth.MemberDetails;
 import com.sjboard.firstproject.domain.Comment;
 import com.sjboard.firstproject.domain.Member;
+import com.sjboard.firstproject.domain.UploadFile;
 import com.sjboard.firstproject.dto.*;
+import com.sjboard.firstproject.repository.FileStore;
+import com.sjboard.firstproject.service.AwsS3Service;
 import com.sjboard.firstproject.service.BoardService;
 import com.sjboard.firstproject.service.CommentService;
+import com.sjboard.firstproject.service.ImageUploadService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -26,6 +34,9 @@ public class BoardController {
     private final CommentService commentService;
 
     private final BoardService boardService;
+
+    private final AwsS3Service awsS3Service;
+
 
 
     //게시글 작성폼
@@ -51,6 +62,19 @@ public class BoardController {
         boardService.save(boardSaveDto, principal.getMember());
         return "redirect:/board";
     }
+
+    @Value("${file.dir}")
+    private String fileDir;
+
+
+    @ResponseBody
+    @PostMapping("/board/uploadImage")
+    public String saveImage(@ModelAttribute UploadImageDto uploadImageDto) throws IOException {
+        log.info(String.valueOf(uploadImageDto.getImg()));
+        return awsS3Service.StoreImage(uploadImageDto.getImg());
+        }
+
+
 
 
     //게시글 상세보기폼
@@ -136,5 +160,7 @@ public class BoardController {
     public Long commentDelete(@PathVariable("id") Long id) {
         return commentService.deleteById(id);
     }
+
+
 }
 
