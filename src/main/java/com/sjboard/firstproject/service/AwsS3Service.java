@@ -1,5 +1,6 @@
 package com.sjboard.firstproject.service;
 
+import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
@@ -20,13 +21,14 @@ import java.util.UUID;
 @Service
 public class AwsS3Service {
 
-    private AmazonS3Client amazonS3Client;
+    private final AmazonS3 amazonS3;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucketName;
 
 
     public String StoreImage(MultipartFile file) throws IOException {
+        log.info("storeImage진입");
         validateFileExists(file);
         String originalFilename = file.getOriginalFilename();
         String storeFileName = createStoreFileName(originalFilename);
@@ -35,13 +37,13 @@ public class AwsS3Service {
         objectMetadata.setContentType(file.getContentType());
 
         try (InputStream inputStream = file.getInputStream()) {
-            amazonS3Client.putObject(new PutObjectRequest(bucketName, storeFileName, inputStream, objectMetadata)
+            amazonS3.putObject(new PutObjectRequest(bucketName, storeFileName, inputStream, objectMetadata)
                     .withCannedAcl(CannedAccessControlList.PublicRead));
         } catch (IOException e) {
             throw new IllegalArgumentException("파일 업로드에 실패했습니다.");
         }
 
-        return amazonS3Client.getUrl(bucketName, storeFileName).toString();
+        return amazonS3.getUrl(bucketName, storeFileName).toString();
     }
 
     private void validateFileExists(MultipartFile multipartFile) {

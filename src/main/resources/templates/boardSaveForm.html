@@ -33,6 +33,7 @@
   <div th:replace="fragments/footer :: footer" />
 </div>
 <script>
+
  const Editor = toastui.Editor;
  const editor = new Editor({
   el: document.querySelector('#editor'),
@@ -46,48 +47,43 @@
         }
     }
 });
+const content = document.getElementById("content");
+      editor.setMarkdown(content.value);
 
-      editor.setMarkdown([[${boardSaveDto.getContent()}]]);
+function uploadImage(blob) {
 
-        function uploadImage(blob) {
         let formData = new FormData();
         formData.append('img', blob);
 
         const xhr = new XMLHttpRequest();
         xhr.open("POST", "/board/uploadImage", false);
         xhr.setRequestHeader("contentType", "multipart/form-data");
-
         xhr.send(formData);
 
         if (xhr.readyState === 4 && xhr.status === 200) {
             return xhr.response;
         } else {
-            alert("이미지가 정상적으로 업로드되지 못했습니다.");
+            alert("이미지가 정상적으로 업로드되지 못했습니다.")
         }
     }
 
-
-
-</script>
-<script>
-  function post() {
-    const contents = document.getElementById("content");
+      function post() {
 
 
          if (document.getElementById("title").value === " " || document.getElementById("title").value === "") {
             alert("제목을 입력해주세요")
             return false;
         }
-        else if (document.getElementById("content").value === " " || document.getElementById("content").value === "") {
+        if (document.getElementById("content") === " " || document.getElementById("content") === "") {
             alert("내용을 입력해주세요")
             return false;
-            }
-         contents.value = editor.getMarkdown();
+         }
+         content.value = editor.getMarkdown();
          document.getElementById("boardSaveForm").submit();
 
-
-
     }
+
+
 
 
 </script>

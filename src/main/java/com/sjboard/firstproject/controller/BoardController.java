@@ -67,10 +67,10 @@ public class BoardController {
     private String fileDir;
 
 
-    @ResponseBody
+
     @PostMapping("/board/uploadImage")
-    public String saveImage(@ModelAttribute UploadImageDto uploadImageDto) throws IOException {
-        log.info(String.valueOf(uploadImageDto.getImg()));
+    public @ResponseBody String saveImage(@ModelAttribute UploadImageDto uploadImageDto) throws IOException {
+        log.info(String.valueOf(uploadImageDto.getImg().getOriginalFilename()));
         return awsS3Service.StoreImage(uploadImageDto.getImg());
         }
 

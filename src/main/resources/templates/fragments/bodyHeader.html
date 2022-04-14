@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <div class="header" th:fragment="bodyHeader">
-
+  <link rel="stylesheet" th:href="@{/css/style.css}"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp" rel="stylesheet">
     <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
       <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
         <li><a href="/" class="nav-link px-2 link-secondary"><h3>홈</h3></a></li>
@@ -9,12 +11,26 @@
 <!--        <li><a href="/aboutMe" class="nav-link px-2 link-dark"><h3></h3></a></li>-->
       </ul>
 
-
-      <div class="text-end">
-        <button type="button" class="btn btn-outline-primary me-2"sec:authorize="isAnonymous()"  th:onclick="|location.href='@{/login}'|" id="login">로그인</button>
+      <div class="dropdown text-end">
+      <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+        <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+      </a>
+      <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
+        <li><a class="dropdown-item" href="#">New project...</a></li>
+        <li><a class="dropdown-item" href="#">Settings</a></li>
+        <li><a class="dropdown-item" href="#">Profile</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" href="#">Sign out</a></li>
+      </ul>
+    </div>
+</div>
+</div>
+      <button type="button" class="btn btn-outline-primary me-2"sec:authorize="isAnonymous()"  th:onclick="|location.href='@{/login}'|" id="login">로그인</button>
         <button type="button" class="btn btn-primary" sec:authorize="isAuthenticated()"  th:onclick="|location.href='@{/logout}'|" id="logout">로그아웃</button>
 <!--        <button type="button" class="btn btn-outline-primary me-2">Login</button>-->
         <button type="button" class="btn btn-primary"  th:onclick="|location.href='@{/joinForm}'|">회원가입</button>
       </div>
     </div>
 </div>
+<script src="/docs/5.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+</html>
