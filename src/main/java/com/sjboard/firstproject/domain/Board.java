@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.lang.Nullable;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -52,7 +53,12 @@ public class Board extends BaseTimeEntity{
         this.title = title;
         this.content = content;
         this.member = member;
+
     }
+
+
+
+
 
 
     public void update(String title, String content){

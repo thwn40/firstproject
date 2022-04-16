@@ -55,6 +55,12 @@ public class BoardService {
 //
     }
 
+    @Transactional(readOnly = true)
+    public Page<Board> findAllDescById(Long id, Pageable pageable) {
+        return boardRepository.findAllById(id, pageable);
+//
+    }
+
 
     //게시글 조회
     public BoardResponseDto findById(Long id) {

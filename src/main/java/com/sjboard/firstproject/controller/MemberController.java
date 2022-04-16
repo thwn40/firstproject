@@ -2,17 +2,28 @@ package com.sjboard.firstproject.controller;
 
 import com.sjboard.firstproject.Validator.CheckLoginIdValidator;
 import com.sjboard.firstproject.Validator.CheckNameValidator;
+import com.sjboard.firstproject.auth.MemberDetails;
+import com.sjboard.firstproject.domain.Board;
+import com.sjboard.firstproject.dto.BoardSearchRequestDTO;
 import com.sjboard.firstproject.dto.MemberJoinDto;
+import com.sjboard.firstproject.service.BoardService;
 import com.sjboard.firstproject.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -21,6 +32,7 @@ public class MemberController {
     private final MemberService memberService;
     private final CheckLoginIdValidator checkLoginIdValidator;
     private final CheckNameValidator checkNameValidator;
+    private final BoardService boardService;
 
     @InitBinder
     public void validatorBinder(WebDataBinder binder) {
@@ -57,6 +69,14 @@ public class MemberController {
 
 
     }
+
+    @GetMapping("/myPage")
+    public String myPage(Model model, @AuthenticationPrincipal MemberDetails principal,  @PageableDefault(page = 0, size=5, sort="createdDate", direction = Sort.Direction.DESC) Pageable pageable){
+        Page<Board> board = boardService.findAllDescById(principal.getMember().getId(),pageable);
+        model.addAttribute("board", board);
+        return "myPage";
+    }
+
 
 
 

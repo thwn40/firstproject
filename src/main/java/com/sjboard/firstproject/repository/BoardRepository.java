@@ -12,6 +12,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -27,6 +28,8 @@ public interface BoardRepository extends JpaRepository<Board, Long>, QuerydslPre
     @Modifying
     @Query("update Board b set b.view = b.view - 1 where b.id = :id")
     int minusView(Long id);
+
+    Page<Board> findAllById(Long id, Pageable pageable);
 
     Page<Board> findByTitleContainingOrContentContaining(String title, String content, Pageable pageable);
 
