@@ -75,16 +75,16 @@
             <div sec:authorize="isAuthenticated()" class ="ms-2" th:if="${comment.parent}==null">
                 <button   th:if = "(${comment.member.name}==${member.name})" type="button" th:onclick="main.commentDelete([[${comment.id}]],[[${board.id}]])"
                         class="btn btn-primary btn-sm float-right">삭제</button>
-                <button class="btn btn-warning btn-sm float-right" data-toggle="collapse"
-                        th:data-target="${'#comment-reply-'+comment.id}" aria-expanded="false">답글
+                <button class="btn btn-warning btn-sm float-right" data-bs-toggle="collapse"
+                        th:data-bs-target="${'#comment-reply-'+comment.id}" aria-expanded="false">답글
                 </button>
 
             </div>
             <div class ="ms-5" th:unless="${comment.parent}==null">
                 <button   th:if = "(${comment.member.name}==${member.name})" type="button" th:onclick="main.commentDelete([[${comment.id}]],[[${board.id}]])"
                         class="btn btn-primary btn-sm float-right">삭제</button>
-                <button class="btn btn-warning btn-sm float-right" data-toggle="collapse"
-                        th:data-target="${'#comment-reply-'+comment.id}" aria-expanded="false">답글
+                <button class="btn btn-warning btn-sm float-right" data-bs-toggle="collapse"
+                        th:data-bs-target="${'#comment-reply-'+comment.id}" aria-expanded="false">답글
                 </button>
             </div>
             <!--답글 입력하는 부분-->

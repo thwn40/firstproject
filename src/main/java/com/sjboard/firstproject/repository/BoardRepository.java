@@ -3,6 +3,7 @@ package com.sjboard.firstproject.repository;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.sjboard.firstproject.domain.Board;
+import com.sjboard.firstproject.domain.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,7 +30,7 @@ public interface BoardRepository extends JpaRepository<Board, Long>, QuerydslPre
     @Query("update Board b set b.view = b.view - 1 where b.id = :id")
     int minusView(Long id);
 
-    Page<Board> findAllById(Long id, Pageable pageable);
+    Page<Board> findByMember(Member member, Pageable pageable);
 
     Page<Board> findByTitleContainingOrContentContaining(String title, String content, Pageable pageable);
 

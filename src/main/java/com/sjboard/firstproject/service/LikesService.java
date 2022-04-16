@@ -19,6 +19,7 @@ import java.util.Optional;
 @Slf4j
 public class LikesService {
 
+    private final NoticeService noticeService;
     private final MemberRepository memberRepository;
     private final BoardRepository boardRepository;
     private final LikesRepository likesRepository;
@@ -34,9 +35,12 @@ public class LikesService {
 
         if (likesRepository.findByBoardIdAndMemberId(boardId, memberId).isEmpty()) {
             Likes likes = Likes.builder().member(member).board(board).build();
-            board.LikesCountUp(likes);
             log.info("좋아요 1 증가");
-            return likesRepository.save(likes).getId();
+            Long id = likesRepository.save(likes).getId();
+            if(member!=board.getMember()){
+                noticeService.makeNotice(member,board.getMember(),"내 게시글에 "+member.getName()+"님이 좋아요를 눌렀습니다!");
+            }
+            return id;
         }
         else{
 //            log.info("추천한놈 이름 = {}", byMemberIdAndBoardId.getMember().getName());

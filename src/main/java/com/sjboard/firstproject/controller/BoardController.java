@@ -6,11 +6,11 @@ import com.sjboard.firstproject.domain.Comment;
 import com.sjboard.firstproject.domain.Member;
 import com.sjboard.firstproject.domain.UploadFile;
 import com.sjboard.firstproject.dto.*;
-import com.sjboard.firstproject.repository.FileStore;
+
 import com.sjboard.firstproject.service.AwsS3Service;
 import com.sjboard.firstproject.service.BoardService;
 import com.sjboard.firstproject.service.CommentService;
-import com.sjboard.firstproject.service.ImageUploadService;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

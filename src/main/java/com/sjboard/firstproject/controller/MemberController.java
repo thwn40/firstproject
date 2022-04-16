@@ -4,9 +4,11 @@ import com.sjboard.firstproject.Validator.CheckLoginIdValidator;
 import com.sjboard.firstproject.Validator.CheckNameValidator;
 import com.sjboard.firstproject.auth.MemberDetails;
 import com.sjboard.firstproject.domain.Board;
+import com.sjboard.firstproject.domain.Comment;
 import com.sjboard.firstproject.dto.BoardSearchRequestDTO;
 import com.sjboard.firstproject.dto.MemberJoinDto;
 import com.sjboard.firstproject.service.BoardService;
+import com.sjboard.firstproject.service.CommentService;
 import com.sjboard.firstproject.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +35,7 @@ public class MemberController {
     private final CheckLoginIdValidator checkLoginIdValidator;
     private final CheckNameValidator checkNameValidator;
     private final BoardService boardService;
+    private final CommentService commentService;
 
     @InitBinder
     public void validatorBinder(WebDataBinder binder) {
@@ -70,11 +73,23 @@ public class MemberController {
 
     }
 
-    @GetMapping("/myPage")
-    public String myPage(Model model, @AuthenticationPrincipal MemberDetails principal,  @PageableDefault(page = 0, size=5, sort="createdDate", direction = Sort.Direction.DESC) Pageable pageable){
-        Page<Board> board = boardService.findAllDescById(principal.getMember().getId(),pageable);
-        model.addAttribute("board", board);
-        return "myPage";
+    @GetMapping("/myPageBoard")
+    public String myPageBoard(Model model, @AuthenticationPrincipal MemberDetails principal,  @PageableDefault(page = 0, size=5, sort="createdDate", direction = Sort.Direction.DESC) Pageable pageable){
+        Page<Board> board = boardService.findAllByMember(principal.getMember(),pageable);
+        model.addAttribute("boards", board);
+
+
+        return "myPageBoard";
+    }
+
+    @GetMapping("/myPageComment")
+    public String myPageComment(Model model, @AuthenticationPrincipal MemberDetails principal,  @PageableDefault(page = 0, size=5, sort="createdDate", direction = Sort.Direction.DESC) Pageable pageable){
+        Page<Comment> comment = commentService.findAllByMember(principal.getMember(),pageable);
+        model.addAttribute("comments", comment);
+
+
+        log.info("총 갯수 {}",comment.getTotalElements());
+        return "myPageComment";
     }
 
 

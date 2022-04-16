@@ -39,8 +39,6 @@ public class HomeController {
         Page<Board> board = boardService.findByTitleContainingOrContentContaining(boardSearchRequestDTO,pageable);
         model.addAttribute("board", board);
 //        model.addAttribute("boardSearchRequestDTO", BoardSearchRequestDTO.builder().build());
-
-
         return "home";
     }
 

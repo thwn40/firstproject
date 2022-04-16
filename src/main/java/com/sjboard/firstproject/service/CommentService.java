@@ -1,9 +1,12 @@
 package com.sjboard.firstproject.service;
 
 import com.sjboard.firstproject.domain.Comment;
+import com.sjboard.firstproject.domain.Member;
 import com.sjboard.firstproject.dto.CommentUpdateDto;
 import com.sjboard.firstproject.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +34,11 @@ public class CommentService {
 
     }
 
+    public Page<Comment> findAllByMember(Member member, Pageable pageable){
+        return commentRepository.findByMember(member,pageable);
+
+    }
+
     @Transactional
     public Long deleteById(Long commentId){
 
@@ -54,6 +62,7 @@ public class CommentService {
             return id;
         }
     }
+
 
 
     }

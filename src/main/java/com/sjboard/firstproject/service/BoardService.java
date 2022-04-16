@@ -56,8 +56,8 @@ public class BoardService {
     }
 
     @Transactional(readOnly = true)
-    public Page<Board> findAllDescById(Long id, Pageable pageable) {
-        return boardRepository.findAllById(id, pageable);
+    public Page<Board> findAllByMember(Member member, Pageable pageable) {
+        return boardRepository.findByMember(member, pageable);
 //
     }
 
