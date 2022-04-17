@@ -10,10 +10,15 @@
 <!--        <li><a href="/aboutMe" class="nav-link px-2 link-dark"><h3></h3></a></li>-->
       </ul>
       <button type="button" class="btn btn-outline-primary me-2"sec:authorize="isAnonymous()"  th:onclick="|location.href='@{/login}'|" id="login">로그인</button>
+      <div sec:authorize="isAuthenticated()">
+          <span  sec:authentication="name" >사용자</span> 님 반갑습니다!&nbsp;&nbsp;
+      </div>
       <div class="dropdown text-end" sec:authorize="isAuthenticated()">
+
           <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-              <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+              <img src="https://t1.daumcdn.net/cfile/tistory/2513B53E55DB206927" alt="mdo" width="32" height="32" class="rounded-circle">
           </a>
+
       <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
         <li><a class="dropdown-item" th:onclick="|location.href='@{/myPageBoard}'|">마이 페이지</a></li>
         <li><a class="dropdown-item"  th:onclick="|location.href='@{/logout}'|" id="logout">로그아웃</a></li>

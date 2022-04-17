@@ -1,7 +1,7 @@
 package com.sjboard.firstproject.controller;
 
 
-import com.sjboard.firstproject.auth.MemberDetails;
+import com.sjboard.firstproject.config.auth.MemberDetails;
 import com.sjboard.firstproject.domain.Member;
 import com.sjboard.firstproject.service.LikesService;
 import lombok.RequiredArgsConstructor;

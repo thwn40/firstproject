@@ -1,4 +1,4 @@
-package com.sjboard.firstproject.auth;
+package com.sjboard.firstproject.config.auth;
 
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.BadCredentialsException;

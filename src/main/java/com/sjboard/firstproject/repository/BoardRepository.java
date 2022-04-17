@@ -26,9 +26,6 @@ public interface BoardRepository extends JpaRepository<Board, Long>, QuerydslPre
     @Query("update Board b set b.view = b.view + 1 where b.id = :id")
     int updateView(Long id);
 
-    @Modifying
-    @Query("update Board b set b.view = b.view - 1 where b.id = :id")
-    int minusView(Long id);
 
     Page<Board> findByMember(Member member, Pageable pageable);
 

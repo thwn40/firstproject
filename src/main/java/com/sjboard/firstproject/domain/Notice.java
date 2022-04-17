@@ -14,25 +14,30 @@ public class Notice extends BaseTimeEntity{
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    private Long Id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Member Sender;
+    private Member sender;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Member Receiver;
+    private Member receiver;
 
     @Column(nullable = false)
-    private String Content;
+    private String content;
 
     private boolean isChecked;
 
 
     @Builder
     public Notice(Member sender, Member receiver, String content) {
-        Sender = sender;
-        Receiver = receiver;
-        Content = content;
+        this.sender = sender;
+        this.receiver = receiver;
+        this.content = content;
+    }
+
+    public void changeIsChecked(){
+        this.isChecked=true;
+
     }
 }
 

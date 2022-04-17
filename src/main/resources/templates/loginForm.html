@@ -1,6 +1,7 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header :: header"/>
+
 <body class="text-center">
 
 
@@ -30,12 +31,20 @@
                 <p th:text="${exception}" class ="alert alert-danger"></p>
             </div>
             <button class="btn btn-lg btn-primary" type="submit">로그인</button>
-            <button class="btn btn-lg btn-primary" th:onclick="|location.href='@{/joinForm}'|" type="button">회원가입
-            </button>
+            <button class="btn btn-lg btn-primary" th:onclick="|location.href='@{/joinForm}'|" type="button">회원가입</button>
         </form>
+        <a href="/oauth2/authorization/google">
+            <button type="button" class="btn btn-secondary mt-2">
+                <img src="https://img.icons8.com/color/16/000000/google-logo.png">
+            </button>
+        </a>
+
+
         <div th:replace="fragments/footer :: footer"/>
     </div>
 </div>
+
+
 
 </body>
 </html>

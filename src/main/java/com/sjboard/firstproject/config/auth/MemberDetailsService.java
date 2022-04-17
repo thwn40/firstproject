@@ -1,4 +1,4 @@
-package com.sjboard.firstproject.auth;
+package com.sjboard.firstproject.config.auth;
 
 import com.sjboard.firstproject.domain.Member;
 import com.sjboard.firstproject.repository.MemberRepository;
@@ -7,7 +7,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 

@@ -1,6 +1,7 @@
 package com.sjboard.firstproject.service;
 
 import com.sjboard.firstproject.domain.Member;
+import com.sjboard.firstproject.domain.Role;
 import com.sjboard.firstproject.dto.MemberJoinDto;
 import com.sjboard.firstproject.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +35,7 @@ public class MemberService {
                     .name(memberJoinDto.getName())
                     .loginId(memberJoinDto.getLoginId())
                     .password(memberJoinDto.getPassword())
-                    .role("ROLE_USER")
+                    .role(Role.USER)
                     .build()).getId();
         }
         else{

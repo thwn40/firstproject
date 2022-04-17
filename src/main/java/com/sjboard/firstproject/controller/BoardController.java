@@ -1,10 +1,9 @@
 package com.sjboard.firstproject.controller;
 
 
-import com.sjboard.firstproject.auth.MemberDetails;
+import com.sjboard.firstproject.config.auth.MemberDetails;
 import com.sjboard.firstproject.domain.Comment;
 import com.sjboard.firstproject.domain.Member;
-import com.sjboard.firstproject.domain.UploadFile;
 import com.sjboard.firstproject.dto.*;
 
 import com.sjboard.firstproject.service.AwsS3Service;
@@ -19,11 +18,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -79,11 +77,11 @@ public class BoardController {
 
     //게시글 상세보기폼
     @GetMapping("/board/{id}")
-    public String boardView(@PathVariable Long id, Model model,  @AuthenticationPrincipal MemberDetails principal) {
+    public String boardView(@PathVariable Long id, Model model,  @AuthenticationPrincipal MemberDetails principal, HttpServletRequest request, HttpServletResponse response) {
         BoardResponseDto board = boardService.findById(id);
         List<Comment> comments = commentService.findAllByBoardId(id);
 
-        boardService.hit(id, false);
+        boardService.hit(id,request,response);
 
         if(principal==null){
            log.info("로그인이 안되있음");
@@ -134,7 +132,6 @@ public class BoardController {
     public Long commentSave(@PathVariable("id") Long boardId, @RequestParam(required = false) Long parentId, @Valid @RequestBody CommentSaveDto commentSaveDto, @AuthenticationPrincipal MemberDetails principal) {
 //        MemberVo member = MemberVo.from(principal.getMember());
         Member member = principal.getMember();
-        boardService.hit(boardId, true);
         log.info("{}", parentId);
         if (parentId == null) {
             return boardService.commentParentSave(commentSaveDto.getContent(), member.getId(), boardId);

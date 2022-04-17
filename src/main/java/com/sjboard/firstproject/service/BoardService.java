@@ -11,6 +11,7 @@ import com.sjboard.firstproject.dto.*;
 import com.sjboard.firstproject.repository.BoardRepository;
 import com.sjboard.firstproject.repository.CommentRepository;
 import com.sjboard.firstproject.repository.MemberRepository;
+import com.sjboard.firstproject.repository.NoticeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -18,6 +19,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,6 +33,7 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final CommentRepository commentRepository;
     private final MemberRepository memberRepository;
+    private final NoticeService noticeService;
 
     //게시글 저장
     @Transactional
@@ -101,6 +106,11 @@ public class BoardService {
 
         Board board = boardRepository.findById(boardId).orElseThrow(()->{return new IllegalArgumentException("게시글이 없습니다");});
 
+        if(member!=board.getMember()) {
+            noticeService.makeNotice(member, board.getMember(), "내 게시글에 " + member.getName() + "님이 댓글을 달았습니다!");
+        }
+
+
         Comment comment = CommentSaveDto.builder().board(board).content(content).member(member).build().toEntity();
 
         return commentRepository.save(comment).getId();
@@ -117,6 +127,11 @@ public class BoardService {
         Comment parentComment = commentRepository.findById(parentId).orElseThrow(()->{return new IllegalArgumentException("부모 댓글이 없습니다");});
 
         Comment childComment = CommentSaveDto.builder().board(board).content(content).member(member).parentComment(parentComment).build().toEntity();
+
+        if(member!=board.getMember()) {
+            noticeService.makeNotice(member, board.getMember(), "내 게시글에 " + member.getName() + "님이 댓글을 달았습니다!");
+        }
+
 
         parentComment.addChildren(childComment);
 
@@ -166,11 +181,42 @@ public class BoardService {
     }
 
     @Transactional
-    public int hit(Long id,boolean duplicate) {
-        if(duplicate){
-            return boardRepository.minusView(id);
+    public int hit(Long id){
+        return boardRepository.updateView(id);
+    }
+
+
+    @Transactional
+    public void hit(Long id, HttpServletRequest request, HttpServletResponse response) {
+
+        Cookie oldCookie = null;
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("postView")) {
+                    oldCookie = cookie;
+                }
+            }
         }
-        return boardRepository.updateView(id); }
+
+        if (oldCookie != null) {
+            if (!oldCookie.getValue().contains("[" + id.toString() + "]")) {
+                hit(id);
+                oldCookie.setValue(oldCookie.getValue() + "_[" + id + "]");
+                oldCookie.setPath("/");
+                oldCookie.setMaxAge(60 * 60 * 24);
+                oldCookie.setHttpOnly(true);
+                response.addCookie(oldCookie);
+            }
+        } else {
+            hit(id);
+            Cookie newCookie = new Cookie("postView","[" + id + "]");
+            newCookie.setPath("/");
+            newCookie.setMaxAge(60 * 60 * 24);
+            response.addCookie(newCookie);
+        }
+
+    }
 
 }
 

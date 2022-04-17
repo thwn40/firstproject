@@ -3,6 +3,7 @@ package com.sjboard.firstproject.dto;
 
 import com.sjboard.firstproject.domain.Board;
 import com.sjboard.firstproject.domain.Member;
+import com.sjboard.firstproject.domain.Role;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,7 +36,7 @@ public class MemberJoinDto {
     }
 
     public Member toEntity(){
-        return Member.builder().name(name).loginId(loginId).password(password).role("ROLE_USER").build();
+        return Member.builder().name(name).loginId(loginId).password(password).role(Role.USER).build();
     }
 
 
