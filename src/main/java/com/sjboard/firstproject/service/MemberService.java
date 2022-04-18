@@ -6,6 +6,10 @@ import com.sjboard.firstproject.dto.MemberJoinDto;
 import com.sjboard.firstproject.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +25,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final AuthenticationManager authenticationManager;
 
 
 
@@ -91,12 +96,19 @@ public class MemberService {
 
     }
     @Transactional
-    public void ChangeName(Long id, String name){
+    public void ChangeName(Long id, String name, String password){
         Member member = memberRepository.findById(id).orElseThrow(() -> {
-            return new IllegalArgumentException("게시글이 없습니다");
+            return new IllegalArgumentException("회원이 없습니다");
         });
 
-        member.update(name);
+        String rawPassword = password;
+        String encPassword = bCryptPasswordEncoder.encode(rawPassword);
+
+        member.update(name,encPassword);
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(member.getLoginId(),rawPassword));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+
     }
 
     }

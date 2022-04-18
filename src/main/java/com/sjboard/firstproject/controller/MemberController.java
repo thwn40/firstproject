@@ -18,13 +18,19 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Controller
@@ -37,6 +43,7 @@ public class MemberController {
     private final BoardService boardService;
     private final CommentService commentService;
     private final NoticeService noticeService;
+    private final AuthenticationManager authenticationManager;
 
     @InitBinder
     public void validatorBinder(WebDataBinder binder) {
@@ -82,17 +89,23 @@ public class MemberController {
     }
 
     @PostMapping("/myPage")
-    public String changeEmail(@AuthenticationPrincipal MemberDetails principal,@RequestParam String name){
+    public String changeEmail(@AuthenticationPrincipal MemberDetails principal, String name, String password ){
         log.info("포스트 마이페이지 진입");
-        log.info("name={}", name);
-        memberService.ChangeName(principal.getMember().getId(), name);
-        return "redirect:/myPage";
+        log.info("id={}",principal.getUsername());
+        log.info("password={}",principal.getPassword());
+        memberService.ChangeName(principal.getMember().getId(), name ,password);
+
+
+
+
+        return "redirect:/";
     }
 
     @GetMapping("/myPageBoard")
     public String myPageBoard(Model model, @AuthenticationPrincipal MemberDetails principal,  @PageableDefault(page = 0, size=5, sort="createdDate", direction = Sort.Direction.DESC) Pageable pageable){
         Page<Board> board = boardService.findAllByMember(principal.getMember(),pageable);
         model.addAttribute("boards", board);
+
 
 
         return "myPageBoard";

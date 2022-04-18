@@ -1,10 +1,13 @@
 package com.sjboard.firstproject.config;
 
+import com.sjboard.firstproject.config.auth.MemberDetailsService;
 import com.sjboard.firstproject.config.oauth.PrincipalOauth2UserService;
 import com.sjboard.firstproject.domain.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -21,9 +24,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final AuthenticationFailureHandler customFailureHandler;
     private final PrincipalOauth2UserService principalOauth2UserService;
+    private final MemberDetailsService memberDetailsService;
+    private final BeanConfig beanConfig;
 
-
-
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -49,4 +57,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .userInfoEndpoint()
                 .userService(principalOauth2UserService);
     }
-}
+
+
+//        @Override
+//        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//            auth.userDetailsService(memberDetailsService).passwordEncoder(beanConfig.encodePwd());
+//        }
+    }
+

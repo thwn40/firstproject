@@ -15,11 +15,11 @@ public class BeanConfig {
     @PersistenceContext
     private EntityManager entityManager;
 
+
     @Bean
     public BCryptPasswordEncoder encodePwd() {
         return new BCryptPasswordEncoder();
     }
-
     @Bean
     public JPAQueryFactory jpaQueryFactory() {
         return new JPAQueryFactory(entityManager);

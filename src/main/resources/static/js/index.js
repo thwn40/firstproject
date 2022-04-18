@@ -157,7 +157,7 @@ commentUpdate:function(){
     }); //ajax 통신을 이용해서 3개의 데이터를 json으로 변경하여 insert 요청을 한다
 },
 
- profileUpdate : function (name) {
+ profileUpdate : function (name,password) {
 
 
       console.log(name);
@@ -168,7 +168,7 @@ commentUpdate:function(){
    $.ajax({
     type: "POST",
     url: "/myPage",
-    data: name,
+    data: name,password
     dataType : 'text',
     }).done(function(){
 
