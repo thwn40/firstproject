@@ -90,5 +90,13 @@ public class MemberService {
 
 
     }
+    @Transactional
+    public void ChangeName(Long id, String name){
+        Member member = memberRepository.findById(id).orElseThrow(() -> {
+            return new IllegalArgumentException("게시글이 없습니다");
+        });
+
+        member.update(name);
+    }
 
     }

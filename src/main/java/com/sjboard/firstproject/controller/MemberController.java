@@ -5,6 +5,7 @@ import com.sjboard.firstproject.Validator.CheckNameValidator;
 import com.sjboard.firstproject.config.auth.MemberDetails;
 import com.sjboard.firstproject.domain.Board;
 import com.sjboard.firstproject.domain.Comment;
+import com.sjboard.firstproject.domain.Member;
 import com.sjboard.firstproject.domain.Notice;
 import com.sjboard.firstproject.dto.MemberJoinDto;
 import com.sjboard.firstproject.service.BoardService;
@@ -71,6 +72,21 @@ public class MemberController {
         return "loginForm";
 
 
+    }
+    @GetMapping("/myPage")
+    public String myPage(Model model, @AuthenticationPrincipal MemberDetails principal){
+        log.info("my page 진입");
+        Member member = principal.getMember();
+        model.addAttribute("member", member);
+        return "myPage";
+    }
+
+    @PostMapping("/myPage")
+    public String changeEmail(@AuthenticationPrincipal MemberDetails principal,@RequestParam String name){
+        log.info("포스트 마이페이지 진입");
+        log.info("name={}", name);
+        memberService.ChangeName(principal.getMember().getId(), name);
+        return "redirect:/myPage";
     }
 
     @GetMapping("/myPageBoard")

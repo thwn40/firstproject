@@ -10,6 +10,9 @@
     <h1 class = "mt-3">마이페이지</h1>
     <ul class="nav nav-tabs">
         <li class="nav-item">
+            <a class="nav-link" th:onclick="|location.href='@{/myPage}'|">회원 정보</a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link active" aria-current="page" th:onclick="|location.href='@{/myPageBoard}'|">나의 게시글</a>
         </li>
         <li class="nav-item">

@@ -61,7 +61,6 @@ public class MemberDetails implements UserDetails, OAuth2User {
     }
 
 
-
     @Override
     public boolean isAccountNonExpired() {
         return true;

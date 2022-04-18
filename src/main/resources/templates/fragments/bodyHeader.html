@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <div class="header" th:fragment="bodyHeader">
 
 
@@ -11,7 +11,7 @@
       </ul>
       <button type="button" class="btn btn-outline-primary me-2"sec:authorize="isAnonymous()"  th:onclick="|location.href='@{/login}'|" id="login">로그인</button>
       <div sec:authorize="isAuthenticated()">
-          <span  sec:authentication="name" >사용자</span> 님 반갑습니다!&nbsp;&nbsp;
+          <span  th:text ="${#authentication.getPrincipal().getMember().getName()}" >사용자</span> 님 반갑습니다!&nbsp;&nbsp;
       </div>
       <div class="dropdown text-end" sec:authorize="isAuthenticated()">
 

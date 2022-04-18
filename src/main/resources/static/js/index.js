@@ -156,6 +156,28 @@ commentUpdate:function(){
     alert(JSON.stringify(error));
     }); //ajax 통신을 이용해서 3개의 데이터를 json으로 변경하여 insert 요청을 한다
 },
+
+ profileUpdate : function (name) {
+
+
+      console.log(name);
+        if (document.getElementById("name") === " " || document.getElementById("name") === "") {
+            alert("내용을 입력해주세요")
+            return false;
+         }
+   $.ajax({
+    type: "POST",
+    url: "/myPage",
+    data: name,
+    dataType : 'text',
+    }).done(function(){
+
+    location.href = "/";
+    }).fail(function(error){
+    alert(JSON.stringify(error));
+    });
+},
+
    LikeUp : function (boardId,memberId) {
                 var data = {
                  boardId,memberId

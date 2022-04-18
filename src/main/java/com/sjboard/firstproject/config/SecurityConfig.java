@@ -20,12 +20,9 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final AuthenticationFailureHandler customFailureHandler;
-    private PrincipalOauth2UserService principalOauth2UserService;
+    private final PrincipalOauth2UserService principalOauth2UserService;
 
-    @Bean
-    public BCryptPasswordEncoder encodePwd() {
-        return new BCryptPasswordEncoder();
-    }
+
 
 
     @Override
@@ -44,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/")
                 .and()
                 .oauth2Login()
-                .loginPage("/login") /*
+                .loginPage("/login")/*
                 구글 로그인이 완료된 뒤의 후처리가 필요함 1.코드받기(인증) 2.엑세스토큰(권한) 3.사용자프로필 정보를 가져오고 4-1.그 정보를 토대로 회원가입을 자동으로 진행
                 4.2 추가정보 입력시켜서 회원가입
                 Tip. 코드x, (액세스토큰+사용자프로필정보 o)

@@ -45,13 +45,6 @@ public class Member extends BaseTimeEntity{
     @OneToMany(mappedBy = "member",  cascade = CascadeType.REMOVE)
     private List<Comment> commentList = new ArrayList<>();
 
-    @Builder
-    public Member(String loginId, String name, String password, Role role) {
-        this.loginId = loginId;
-        this.name = name;
-        this.password = password;
-        this.role = role;
-    }
 
     @Builder
     public Member(String loginId, String name, String password, Role role, String provider, String providerId) {
@@ -61,5 +54,10 @@ public class Member extends BaseTimeEntity{
         this.role = role;
         this.provider = provider;
         this.providerId = providerId;
+    }
+
+    public Member update(String name){
+        this.name=name;
+        return this;
     }
 }
