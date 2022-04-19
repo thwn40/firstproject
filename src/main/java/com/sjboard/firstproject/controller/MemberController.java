@@ -47,7 +47,7 @@ public class MemberController {
     private final NoticeService noticeService;
     private final AuthenticationManager authenticationManager;
 
-    @InitBinder
+    @InitBinder("MemberJoinDto")
     public void validatorBinder(WebDataBinder binder) {
         binder.addValidators(checkLoginIdValidator);
         binder.addValidators(checkNameValidator);
@@ -83,14 +83,16 @@ public class MemberController {
 
     }
     @GetMapping("/myPage")
-    public String myPage(Model model, @AuthenticationPrincipal MemberDetails principal){
+    public String myPage(@AuthenticationPrincipal MemberDetails principal, Model model){
 
 
         log.info("my page 진입");
         Member member = principal.getMember();
         model.addAttribute("member", member);
         MemberUpdateDto memberUpdateDto = new MemberUpdateDto();
+        memberUpdateDto.setLoginId(member.getLoginId());
         memberUpdateDto.setName(member.getName());
+        memberUpdateDto.setCreatedDate(member.getCreatedDate());
         model.addAttribute("memberUpdateDto",memberUpdateDto);
         return "myPage";
     }
@@ -98,17 +100,17 @@ public class MemberController {
     //중복확인
     @ResponseBody
     @PostMapping("/nameCheck")
-    public int nameCheck(HttpServletRequest req) throws Exception{
+    public int nameCheck(MemberUpdateDto dto) throws Exception{
         log.info("nameCheck진입");
-        String name = req.getParameter("name");
-        int result = memberService.NameCheck(name);//중복아이디 있으면 1, 없으면 0
+        log.info("name = {}", dto.getName());
+        int result = memberService.NameCheck(dto.getName());//중복아이디 있으면 1, 없으면 0
 
         return result;
 
     }
 
     @PostMapping("/myPage")
-    public String changeProfile(@AuthenticationPrincipal MemberDetails principal, MemberUpdateDto dto, BindingResult bindingResult){
+    public String changeProfile(@AuthenticationPrincipal MemberDetails principal, @Valid MemberUpdateDto dto, BindingResult bindingResult){
         if (bindingResult.hasErrors()) {
             log.info("errors={}", bindingResult);
             return "myPage";
@@ -118,10 +120,7 @@ public class MemberController {
         log.info("password={}",principal.getPassword());
         memberService.ChangeName(principal.getMember().getId(), dto.getName() ,dto.getPassword());
 
-
-
-
-        return "redirect:/";
+        return "redirect:/myPage";
     }
 
     @GetMapping("/myPage/Board")
@@ -157,7 +156,7 @@ public class MemberController {
     public String myPageNoticeAllRead(Model model, @AuthenticationPrincipal MemberDetails principal){
         log.info("myPageNoticeAllRead 진입");
         noticeService.checkNotice(principal.getMember());
-        return "redirect:/myPageNotice";
+        return "redirect:/myPage/Notice";
     }
 
 

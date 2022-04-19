@@ -4,7 +4,10 @@
 <head th:replace="fragments/header :: header" />
 
 <body>
-
+<style>
+    .id_ok{color:#0000FF; display: none;}
+.id_already{color:#CD1039; display: none;}
+</style>
 <div class="container mt-4">
     <div th:replace="fragments/bodyHeader :: bodyHeader" />
     <h1 class = "mt-3">마이페이지</h1>
@@ -22,28 +25,30 @@
             <a class="nav-link" th:onclick="|location.href='@{/myPage/Notice}'|">알림</a>
         </li>
     </ul>
-
+    <form th:action ="@{/myPage}"  method = "post" th:object="${memberUpdateDto}"  >
     <div class="my-3">
         <label th:for="loginId" class="form-label fw-bold">아이디</label>
-        <p  th:text="${member.loginId}"  name="loginId" id="loginId"></p>
+        <p  th:text="*{loginId}"  name="loginId" id="loginId"></p>
     </div>
-    <form th:action ="@{/myPage}"  method = "post" th:object="${memberUpdateDto}"  >
+
     <div class="my-3 col-md-3">
         <label th:for="name" class="form-label fw-bold" >이름</label>
             <div class="input-group">
-                <input class="form-control"   th:field="*{name}" name="name" id="name"  th:errorclass="field-error" >
+                <input class="form-control"   th:field="*{name}"  id="name"  th:errorclass="field-error" >
                 <button type="button" class="btn btn-primary" th:onclick="main.profileUpdate()">중복체크</button>
-<!--                <p th:if="${#fields.hasErrors('name')}"-->
-<!--                   th:errors="*{name}">Incorrect data</p>-->
             </div>
+        <p th:if="${#fields.hasErrors('name')}"
+           th:errors="*{name}">Incorrect data</p>
     </div>
     <div class="my-3 col-md-3">
         <label th:for="name" class="form-label fw-bold" >새 비밀번호</label>
-        <input class="form-control" name="password" id="password" >
+        <input class="form-control" th:field="*{password}" name="password" id="password"   th:errorclass="field-error">
+        <p th:if="${#fields.hasErrors('password')}"
+           th:errors="*{password}">Incorrect data</p>
     </div>
     <div class="mb-3">
         <label th:for="createdDate" class="form-label fw-bold">가입일</label>
-            <p th:text="${#temporals.format(member.createdDate,'yyyy년 MM월 dd일')}" name="createdDate" id ="createdDate" ></p>
+            <p th:text="*{#temporals.format(createdDate,'yyyy년 MM월 dd일')}" name="createdDate" id ="createdDate" ></p>
     </div>
     <button class="btn btn-primary" id="OK">변경</button>
     </form>

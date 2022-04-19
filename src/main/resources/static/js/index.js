@@ -159,13 +159,15 @@ commentUpdate:function(){
 
 
 
- profileUpdate : function (name) {
+ profileUpdate : function () {
  console.log("profileupdate 진입");
+ var name = $('#name').val();
+ console.log(name);
 		$.ajax({
 			url:'/nameCheck',
 			type:'post',
-			data: name,
-			success:function(name){
+			data: {name:name},
+			success:function(result){
 				if(result==1){
 					alert("이미 사용중인 아이디입니다.")
 					$("#OK").attr('disabled','disabled');

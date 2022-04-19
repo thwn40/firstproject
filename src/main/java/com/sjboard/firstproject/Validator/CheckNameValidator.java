@@ -1,6 +1,7 @@
 package com.sjboard.firstproject.Validator;
 
 import com.sjboard.firstproject.dto.MemberJoinDto;
+import com.sjboard.firstproject.dto.MemberUpdateDto;
 import com.sjboard.firstproject.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
