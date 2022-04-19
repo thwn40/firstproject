@@ -60,14 +60,11 @@ public class MemberService {
 
 
     public int NameCheck(String name) {
-        if(name.length()==0){
-            return 2;
-        }
+        log.info("name check 진입");
 
         Optional<Member> byName = memberRepository.findByName(name);
 
         if (byName.isEmpty()) {
-
             return 0;
         }
         else{

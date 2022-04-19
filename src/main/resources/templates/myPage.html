@@ -13,13 +13,13 @@
             <a class="nav-link active" aria-current="page" th:onclick="|location.href='@{/myPage}'|">회원 정보</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" th:onclick="|location.href='@{/myPageBoard}'|">나의 게시글</a>
+            <a class="nav-link" th:onclick="|location.href='@{/myPage/Board}'|">나의 게시글</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" th:onclick="|location.href='@{/myPageComment}'|">나의 댓글</a>
+            <a class="nav-link" th:onclick="|location.href='@{/myPage/Comment}'|">나의 댓글</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" th:onclick="|location.href='@{/myPageNotice}'|">알림</a>
+            <a class="nav-link" th:onclick="|location.href='@{/myPage/Notice}'|">알림</a>
         </li>
     </ul>
 
@@ -27,13 +27,15 @@
         <label th:for="loginId" class="form-label fw-bold">아이디</label>
         <p  th:text="${member.loginId}"  name="loginId" id="loginId"></p>
     </div>
-    <form th:action ="@{/myPage}"  method = "post" th:object="${member}"  >
+    <form th:action ="@{/myPage}"  method = "post" th:object="${memberUpdateDto}"  >
     <div class="my-3 col-md-3">
         <label th:for="name" class="form-label fw-bold" >이름</label>
             <div class="input-group">
-                <input class="form-control"   th:field="*{name}" name="name" id="name" >
+                <input class="form-control"   th:field="*{name}" name="name" id="name"  th:errorclass="field-error" >
+                <button type="button" class="btn btn-primary" th:onclick="main.profileUpdate()">중복체크</button>
+<!--                <p th:if="${#fields.hasErrors('name')}"-->
+<!--                   th:errors="*{name}">Incorrect data</p>-->
             </div>
-
     </div>
     <div class="my-3 col-md-3">
         <label th:for="name" class="form-label fw-bold" >새 비밀번호</label>
@@ -41,18 +43,15 @@
     </div>
     <div class="mb-3">
         <label th:for="createdDate" class="form-label fw-bold">가입일</label>
-            <p th:text="${#temporals.format(member.createdDate,'yyyy년 MM월 dd일')}" nae="createdDate" id ="createdDate" ></p>
+            <p th:text="${#temporals.format(member.createdDate,'yyyy년 MM월 dd일')}" name="createdDate" id ="createdDate" ></p>
     </div>
-    <button class="btn btn-primary" >변경</button>
+    <button class="btn btn-primary" id="OK">변경</button>
     </form>
 
 </div>
 
 
 
-<script>
-
-</script>
 <script src="/js/index.js"> </script>
 <script src="/docs/5.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 <div th:replace="fragments/footer :: footer" />

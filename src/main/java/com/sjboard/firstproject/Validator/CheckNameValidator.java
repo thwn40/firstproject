@@ -20,4 +20,5 @@ public class CheckNameValidator extends AbstractValidator<MemberJoinDto> {
         }
 
     }
+
 }

@@ -157,26 +157,25 @@ commentUpdate:function(){
     }); //ajax 통신을 이용해서 3개의 데이터를 json으로 변경하여 insert 요청을 한다
 },
 
- profileUpdate : function (name,password) {
 
 
-      console.log(name);
-        if (document.getElementById("name") === " " || document.getElementById("name") === "") {
-            alert("내용을 입력해주세요")
-            return false;
-         }
-   $.ajax({
-    type: "POST",
-    url: "/myPage",
-    data: name,password
-    dataType : 'text',
-    }).done(function(){
-
-    location.href = "/";
-    }).fail(function(error){
-    alert(JSON.stringify(error));
-    });
-},
+ profileUpdate : function (name) {
+ console.log("profileupdate 진입");
+		$.ajax({
+			url:'/nameCheck',
+			type:'post',
+			data: name,
+			success:function(name){
+				if(result==1){
+					alert("이미 사용중인 아이디입니다.")
+					$("#OK").attr('disabled','disabled');
+				}else{
+					alert("사용 가능한 아이디입니다.")
+					$("#OK").removeAttr('disabled');
+				}
+			}
+		});
+	},
 
    LikeUp : function (boardId,memberId) {
                 var data = {
