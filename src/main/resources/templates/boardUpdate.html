@@ -2,25 +2,83 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header :: header" />
 <body>
-
+<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 <div class="container  mt-4">
     <div th:replace="fragments/bodyHeader :: bodyHeader" />
-    <form method = "post">
+    <form method="post" id="boardUpdateForm" th:object="${board}" enctype="multipart/form-data">
             <div class="my-3">
                 <label for="title" class="form-label">제목</label>
-                <input class="form-control" name="title" id="title" th:value="${board.title}">
+                <input class="form-control" name="title" id="title" th:value="*{title}">
             </div>
             <div class="mb-3">
                 <label for="content" class="form-label">내용</label>
-                <input class="form-control" name="content" id ="content" th:value="${board.content}" rows="8"></input>
+                <textarea class="text" th:text="*{content}" name="content" id ="content" rows="8" hidden></textarea>
+                <label for="editor"></label>
+                <div style="background: white" id="editor"></div>
             </div>
 
-
-        <div class="text-end"><button class="btn btn-warning" type="submit">제출</button></div>
+        <div class="text-end"><button class="btn btn-warning" onclick="post()">제출</button></div>
 
     </form>
     <div th:replace="fragments/footer :: footer" />
 </div>
+<script>
+
+ const Editor = toastui.Editor;
+ const editor = new Editor({
+  el: document.querySelector('#editor'),
+  height: '600px',
+  initialEditType: 'markdown',
+  previewStyle: 'vertical',
+  hooks: {
+        addImageBlobHook: (blob, callback) => {
+            let imgurl = uploadImage(blob);
+            callback(imgurl, "첨부 이미지")
+        }
+    }
+});
+const content = document.getElementById("content");
+
+
+
+function uploadImage(blob) {
+
+        let formData = new FormData();
+        formData.append('img', blob);
+
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "/board/uploadImage", false);
+        xhr.setRequestHeader("contentType", "multipart/form-data");
+        xhr.send(formData);
+
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            return xhr.response;
+        } else {
+            alert("이미지가 정상적으로 업로드되지 못했습니다.")
+        }
+    }
+
+      function post() {
+        content.value = editor.getMarkdown();
+
+         if (document.getElementById("title").value === " " || document.getElementById("title").value === "") {
+            alert("제목을 입력해주세요")
+            return false;
+        }
+        if (document.getElementById("content") === " " || document.getElementById("content") === "") {
+            alert("내용을 입력해주세요")
+            return false;
+         }
+
+
+         document.getElementById("boardUpdateForm").submit();
+
+    }
+
+  editor.setMarkdown(content.value);
+
+
+</script>
 <script src="/docs/5.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
 

@@ -24,7 +24,6 @@ public class MemberUpdateDto {
     private String name;
 
     @Size(min =8, message = "비밀번호는 최소 8자리 이상입니다")
-    @NotBlank(message = "비밀번호는 필수 입니다")
     private String password;
 
     private LocalDateTime createdDate;
