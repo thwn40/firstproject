@@ -22,5 +22,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @Transactional
 class MemberServiceTest {
 
+    @Test
+    public void hello(){
+        System.out.println("hello");
+    }
+
 
 }
