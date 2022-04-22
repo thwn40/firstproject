@@ -85,6 +85,7 @@ public class BoardController {
 
         if(principal==null){
            log.info("로그인이 안되있음");
+           model.addAttribute("member", new Member());
 
         }
         else{
