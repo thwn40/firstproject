@@ -194,7 +194,7 @@ commentUpdate:function(){
                 }).done(function(){
                     location.href = "/board/"+boardId;
                 }).fail(function (error){
-                    alert(JSON.stringify(error));
+                    alert("권한이 없습니다");
                 });
             },
 
