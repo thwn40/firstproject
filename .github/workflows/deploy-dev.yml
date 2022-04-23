@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 env:
-  S3_BUCKET_NAME: sjboard
+  S3_BUCKET_NAME: sjboard-build
   PROJECT_NAME: firstproject
 
 jobs:
