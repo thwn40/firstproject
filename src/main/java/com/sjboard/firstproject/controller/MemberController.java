@@ -103,7 +103,7 @@ public class MemberController {
     public int nameCheck(MemberUpdateDto dto) throws Exception{
         log.info("nameCheck진입");
         log.info("name = {}", dto.getName());
-        int result = memberService.NameCheck(dto.getName());//중복아이디 있으면 1, 없으면 0
+        int result = memberService.nameCheck(dto.getName());//중복아이디 있으면 1, 없으면 0
 
         return result;
 

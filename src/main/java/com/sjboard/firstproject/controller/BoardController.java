@@ -135,9 +135,9 @@ public class BoardController {
         Member member = principal.getMember();
         log.info("{}", parentId);
         if (parentId == null) {
-            return boardService.commentParentSave(commentSaveDto.getContent(), member.getId(), boardId);
+            return commentService.commentParentSave(commentSaveDto.getContent(), member.getId(), boardId);
         } else {
-            return boardService.commentChildrenSave(commentSaveDto.getContent(), member.getId(), boardId, parentId);
+            return commentService.commentChildrenSave(commentSaveDto.getContent(), member.getId(), boardId, parentId);
         }
 
 

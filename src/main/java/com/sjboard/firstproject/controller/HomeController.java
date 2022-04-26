@@ -33,7 +33,7 @@ public class HomeController {
 
     @GetMapping(value = {"/","/board"})
 //    @RequestParam(required = false, defaultValue = "")String searchText
-    public String Home(Model model, @PageableDefault(page = 0, size=5, sort="createdDate", direction = Sort.Direction.DESC) Pageable pageable, BoardSearchRequestDTO boardSearchRequestDTO) {
+    public String Home(Model model, @PageableDefault(page = 0, size=10, sort="createdDate", direction = Sort.Direction.DESC) Pageable pageable, BoardSearchRequestDTO boardSearchRequestDTO) {
 //        Page<Board> board = boardService.findAllDesc(pageable);
         log.info("getType={}",boardSearchRequestDTO.getType());
         Page<Board> board = boardService.findByTitleContainingOrContentContaining(boardSearchRequestDTO,pageable);

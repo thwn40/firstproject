@@ -99,49 +99,13 @@ public class BoardService {
     }
 
     // 부모 댓글 저장
-    @Transactional
-    public Long commentParentSave(String content, Long memberId, Long boardId){
-
-        Member member = memberRepository.findById(memberId).orElseThrow(()->{return new IllegalArgumentException("회원이 없습니다");});
-
-        Board board = boardRepository.findById(boardId).orElseThrow(()->{return new IllegalArgumentException("게시글이 없습니다");});
-
-        if(member!=board.getMember()) {
-            noticeService.makeNotice(member, board.getMember(), "내 게시글에 " + member.getName() + "님이 댓글을 달았습니다!");
-        }
 
 
-        Comment comment = CommentSaveDto.builder().board(board).content(content).member(member).build().toEntity();
-
-        return commentRepository.save(comment).getId();
-    }
-
-    //자식 댓글 저장
-    @Transactional
-    public Long commentChildrenSave(String content, Long memberId, Long boardId,Long parentId){
-
-        Member member = memberRepository.findById(memberId).orElseThrow(()->{return new IllegalArgumentException("회원이 없습니다");});
-
-        Board board = boardRepository.findById(boardId).orElseThrow(()->{return new IllegalArgumentException("게시글이 없습니다");});
-
-        Comment parentComment = commentRepository.findById(parentId).orElseThrow(()->{return new IllegalArgumentException("부모 댓글이 없습니다");});
-
-        Comment childComment = CommentSaveDto.builder().board(board).content(content).member(member).parentComment(parentComment).build().toEntity();
-
-        if(member!=board.getMember()) {
-            noticeService.makeNotice(member, board.getMember(), "내 게시글에 " + member.getName() + "님이 댓글을 달았습니다!");
-        }
 
 
-        parentComment.addChildren(childComment);
 
 
-            log.info("자식 댓글의 갯수 = {}", parentComment.getChildren().size());
 
-
-        return commentRepository.save(childComment).getId();
-
-    }
 
     private BooleanBuilder getSearch(BoardSearchRequestDTO boardSearchRequestDTO){
         String type = boardSearchRequestDTO.getType();

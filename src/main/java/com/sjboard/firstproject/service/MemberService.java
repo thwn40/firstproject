@@ -59,7 +59,7 @@ public class MemberService {
     }
 
 
-    public int NameCheck(String name) {
+    public int nameCheck(String name) {
         log.info("name check 진입");
 
         Optional<Member> byName = memberRepository.findByName(name);
@@ -100,7 +100,9 @@ public class MemberService {
 
         String rawPassword = password;
         String encPassword = bCryptPasswordEncoder.encode(rawPassword);
-
+        if(nameCheck(name)==1){
+            throw new IllegalArgumentException("중복된 이름 입니다.");
+        };
         member.update(name,encPassword);
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(member.getLoginId(),rawPassword));
         SecurityContextHolder.getContext().setAuthentication(authentication);

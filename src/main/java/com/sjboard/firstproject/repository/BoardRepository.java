@@ -26,7 +26,6 @@ public interface BoardRepository extends JpaRepository<Board, Long>, QuerydslPre
     @Query("update Board b set b.view = b.view + 1 where b.id = :id")
     int updateView(Long id);
 
-
     Page<Board> findByMember(Member member, Pageable pageable);
 
     Page<Board> findByTitleContainingOrContentContaining(String title, String content, Pageable pageable);
