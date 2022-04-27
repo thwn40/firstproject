@@ -14,6 +14,7 @@ public class Notice extends BaseTimeEntity{
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @Column(name="notice_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

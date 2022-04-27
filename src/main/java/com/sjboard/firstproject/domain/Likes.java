@@ -13,6 +13,7 @@ public class Likes extends BaseTimeEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name ="likes_id")
     private Long id;
 
     @ManyToOne

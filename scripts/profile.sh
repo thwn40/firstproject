@@ -15,6 +15,7 @@ function find_idle_profile()
     fi
 
     if [ ${CURRENT_PROFILE} == real1 ]
+
     then
       IDLE_PROFILE=real2
     else
