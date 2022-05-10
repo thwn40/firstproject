@@ -76,16 +76,23 @@ public class BoardController {
 
 
     //게시글 상세보기폼
+
+
     @GetMapping("/board/{id}")
     public String boardView(@PathVariable Long id, Model model,  @AuthenticationPrincipal MemberDetails principal, HttpServletRequest request, HttpServletResponse response) {
-        BoardResponseDto board = boardService.findById(id);
-        List<Comment> comments = commentService.findAllByBoardId(id);
+        BoardViewResponseDto board = boardService.findById2(id);
+        List<Comment> comments = board.getComments();
+
+                for (Comment comment : comments) {
+            comment.getChildren().size();
+        }
+
 
         boardService.hit(id,request,response);
 
         if(principal==null){
-           log.info("로그인이 안되있음");
-           model.addAttribute("member", new Member());
+            log.info("로그인이 안되있음");
+            model.addAttribute("member", new Member());
 
         }
         else{
@@ -93,15 +100,15 @@ public class BoardController {
             Member member = principal.getMember();
             model.addAttribute("member",member);
         }
-        log.info("좋아요 수={}",board.getLikeCount());
 
 
-        model.addAttribute("comments", comments);
         model.addAttribute("board", board);
+        model.addAttribute("comments", comments);
         model.addAttribute("commentSaveDto", new CommentSaveDto());
 
         return "boardView";
     }
+
 
     // 게시글 수정폼
     @GetMapping("/board/{id}/update")

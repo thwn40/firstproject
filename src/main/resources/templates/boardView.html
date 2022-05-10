@@ -57,16 +57,16 @@
                     <div class="flex-shrink-0"></div>
                     <div class="ms-2" th:if="${comment.parent}==null">
                         <div class="fw-bold"><a th:text="${comment.member.name}"></a>
-                            <small th:text="${#temporals.format(board.modifiedDate,'yyyy-MM-dd HH:mm')}"></small>
+                            <small th:text="${#temporals.format(comment.modifiedDate,'yyyy-MM-dd HH:mm')}"></small>
                         </div>
                         <p th:text="${comment.content}"></p>
                     </div>
-                    <div class="ms-5" th:unless="${comment.parent}==null">
-                        <div class="fw-bold">ㄴ<a th:text="${comment.member.name}"></a>
-                            <small th:text="${#temporals.format(board.modifiedDate,'yyyy-MM-dd HH:mm')}"></small>
-                        </div>
-                        <p th:text="${comment.content}"></p>
-                    </div>
+<!--                    <div class="ms-5" th:unless="${comment.parent}==null">-->
+<!--                        <div class="fw-bold">ㄴ<a th:text="${comment.member.name}"></a>-->
+<!--                            <small th:text="${#temporals.format(comment.modifiedDate,'yyyy-MM-dd HH:mm')}"></small>-->
+<!--                        </div>-->
+<!--                        <p th:text="${comment.content}"></p>-->
+<!--                    </div>-->
 
 
                     </div>
@@ -105,19 +105,19 @@
             </div>
         </ul>
         <!--답글 입력하는 부분-->
-        <ul id ="comment--box2" class="list-group" th:each="comment : ${comment.children}">
+        <ul id ="comment--box2" class="list-group" th:each="comment : ${comment.getChildren()}">
             <li class="list-group-item d-flex justify-content-between" >
                 <div class="d-flex">
                     <div class="flex-shrink-0"></div>
                     <div class="ms-2" th:if="${comment.parent}==null">
                         <div class="fw-bold"><a th:text="${comment.member.name}"></a>
-                            <small th:text="${#temporals.format(board.modifiedDate,'yyyy-MM-dd HH:mm')}"></small>
+                            <small th:text="${#temporals.format(comment.modifiedDate,'yyyy-MM-dd HH:mm')}"></small>
                         </div>
                         <p th:text="${comment.content}"></p>
                     </div>
                     <div class="ms-5" th:unless="${comment.parent}==null">
                         <div class="fw-bold">ㄴ<a th:text="${comment.member.name}"></a>
-                            <small th:text="${#temporals.format(board.modifiedDate,'yyyy-MM-dd HH:mm')}"></small>
+                            <small th:text="${#temporals.format(comment.modifiedDate,'yyyy-MM-dd HH:mm')}"></small>
                         </div>
                         <p th:text="${comment.content}"></p>
                     </div>

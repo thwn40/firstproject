@@ -42,7 +42,7 @@ public class Board extends BaseTimeEntity{
     List<Likes> likeCount = new ArrayList<>();
 
 
-    @OneToMany(mappedBy = "board", fetch =FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
     List<Comment> comments = new ArrayList<>();
 
 

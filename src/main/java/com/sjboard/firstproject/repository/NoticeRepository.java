@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -22,5 +23,10 @@ public interface NoticeRepository extends JpaRepository<Notice,Long> {
     void checkingNotice(Long id);
 
 
-    Page<Notice> findByReceiver(Member receiver, Pageable pageable);
+    @Query(value = "select n from Notice n"+
+    " join fetch n.receiver"+
+            " join fetch n.sender"
+    , countQuery = "select count(n) from Notice n"+
+            " join n.receiver")
+    Page<Notice> findByReceiver(@Param("receiver")Member receiver, Pageable pageable);
 }

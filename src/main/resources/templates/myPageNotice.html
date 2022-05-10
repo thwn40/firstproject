@@ -52,10 +52,10 @@
         <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center"  th:with="start=${(notices.number/5)*5 + 1},
                   end=(${(notices.totalPages == 0) ? 1 : (start + (5 - 1) < notices.totalPages ? start + (5 - 1) : notices.totalPages)})">
-                <li class="page-item" th:if="${start > 1}"><a class="page-link" th:href="@{/myPageNotice/(page=${notices.number - 1})}">이전</a></li>
+                <li class="page-item" th:if="${start > 1}"><a class="page-link" th:href="@{/myPage/Notice/(page=${notices.number - 1})}">이전</a></li>
                 <li th:each="i : ${#numbers.sequence(start,end)}"  th:class="${i == notices.number + 1} ? 'page-item active' : 'page-item'">
-                    <a class="page-link" th:href="@{/myPageNotice/(page=${i-1})}" th:text="${i}"></a></li>
-                <li class="page-item"  th:if="${end < notices.totalPages}"><a class="page-link" th:href="@{/myPageNotice/(page=${notices.number + 1})}">다음</a></li>
+                    <a class="page-link" th:href="@{/myPage/Notice/(page=${i-1})}" th:text="${i}"></a></li>
+                <li class="page-item"  th:if="${end < notices.totalPages}"><a class="page-link" th:href="@{/myPage/Notice/(page=${notices.number + 1})}">다음</a></li>
 
             </ul>
         </nav>

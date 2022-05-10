@@ -62,6 +62,7 @@ public class BoardService {
 
     @Transactional(readOnly = true)
     public Page<Board> findAllByMember(Member member, Pageable pageable) {
+        Long memberId = member.getId();
         return boardRepository.findByMember(member, pageable);
 //
     }
@@ -75,6 +76,16 @@ public class BoardService {
             throw new IllegalStateException("해당 게시글이 없습니다");
         } else {
             return new BoardResponseDto(byId.get());
+        }
+    }
+
+    public BoardViewResponseDto findById2(Long id) {
+        Board byId2 = boardRepository.QueryFindById(id);
+
+        if (byId2==null) {
+            throw new IllegalStateException("해당 게시글이 없습니다");
+        } else {
+            return new BoardViewResponseDto(byId2);
         }
     }
 
@@ -143,6 +154,8 @@ public class BoardService {
         return booleanBuilder;
 
     }
+
+
 
     @Transactional
     public int hit(Long id){

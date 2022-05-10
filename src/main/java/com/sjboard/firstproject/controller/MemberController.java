@@ -138,8 +138,6 @@ public class MemberController {
         Page<Comment> comment = commentService.findAllByMember(principal.getMember(),pageable);
         model.addAttribute("comments", comment);
 
-
-        log.info("총 갯수 {}",comment.getTotalElements());
         return "myPageComment";
     }
 
@@ -148,7 +146,6 @@ public class MemberController {
         Page<Notice> notice = noticeService.findNotice(principal.getMember(),pageable);
         model.addAttribute("notices", notice);
 
-        log.info("총 갯수 {}",notice.getTotalElements());
         return "myPageNotice";
     }
 
