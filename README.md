@@ -1,5 +1,5 @@
 # 게시판 프로젝트
-
+http://ec2-3-39-198-18.ap-northeast-2.compute.amazonaws.com/
 ## 개발 환경
 - IntelliJ
 - Github
