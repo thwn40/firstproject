@@ -8,13 +8,14 @@ spring:
     password:
     driver-class-name: org.h2.Driver
   jpa:
-    properties:
-      hibernate:
-        ddl-auto: none
-        default_batch_fetch_size: 100
+    hibernate:
+      ddl-auto: create
         #     show_sql: true
-        format_sql: true
-        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+    properties:
+      default_batch_fetch_size: 100
+      format_sql: true
+      dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+
 
 
 

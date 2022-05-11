@@ -30,7 +30,7 @@ public class MemberDetails implements UserDetails, OAuth2User {
     }
 
     //oauth2 로그인
-     public MemberDetails(Member member, Map<String,Object> attributes) {
+    public MemberDetails(Member member, Map<String,Object> attributes) {
         this.member = member;
         this.attributes=attributes;
     }
