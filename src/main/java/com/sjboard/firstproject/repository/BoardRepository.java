@@ -34,15 +34,13 @@ public interface BoardRepository extends JpaRepository<Board, Long>, QuerydslPre
     int updateView(Long id);
 
 
-//    @Query(value = "select b from Board b"+
-//    " left outer join fetch b.likeCount"+
-//    " where b.member =:member",countQuery = "select count(b) from Board b left outer join b.likeCount where b.member = :member"
-//   )
+    @Query(value = "select b from Board b"+
+    " left outer join fetch b.likeCount"+
+    " where b.member =:member",countQuery = "select count(b) from Board b left outer join b.likeCount where b.member = :member"
+   )
     Page<Board> findByMember(@Param("member")Member member, Pageable pageable);
     @Query("select b from Board b"+
-
-            " left outer join fetch b.comments cm"+
-            " join fetch cm.member"+
+            " left outer join fetch b.likeCount"+
             " where b.id =:id ")
     Board QueryFindById(@Param("id") Long boardId);
 

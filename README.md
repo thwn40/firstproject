@@ -53,6 +53,10 @@ http://ec2-3-39-198-18.ap-northeast-2.compute.amazonaws.com/
 - 마이페이지(내가 쓴 게시글, 댓글)/프로필 수정
 - Github Actions와 AWS CodeDeploy를 이용한 CI/CD 무중단 배포
 
+## 트러블 슈팅
+### JPA N+1문제 해결해보기
+https://velog.io/@thwn40/asdf-0ljqxt9s
+
 ## 느낀점
 인프런에서 강의를 듣고 스프링 기본기를 더욱 튼튼하게 잡고 실력을 확인해보기 위해 백엔드의 제일 기본이
 되는 게시판을 만들어보았습니다 .개인적으로 게시판에 진짜 이건 있어야겠다라고 느낄만한 기능들은 모두 넣으려고

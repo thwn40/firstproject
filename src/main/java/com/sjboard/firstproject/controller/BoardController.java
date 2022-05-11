@@ -81,11 +81,8 @@ public class BoardController {
     @GetMapping("/board/{id}")
     public String boardView(@PathVariable Long id, Model model,  @AuthenticationPrincipal MemberDetails principal, HttpServletRequest request, HttpServletResponse response) {
         BoardViewResponseDto board = boardService.findById2(id);
-        List<Comment> comments = board.getComments();
+        List<Comment> comments = commentService.findAllByBoardId(id);
 
-                for (Comment comment : comments) {
-            comment.getChildren().size();
-        }
 
 
         boardService.hit(id,request,response);
