@@ -43,7 +43,6 @@ public class LikesService {
             return id;
         }
         else{
-//            log.info("추천한놈 이름 = {}", byMemberIdAndBoardId.getMember().getName());
             return 1L;
 
 
